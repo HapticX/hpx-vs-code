@@ -1,0 +1,63 @@
+{
+  "Component Declaration": {
+    "prefix": ["component"],
+    "body": [
+      "component ${1:ComponentName}:",
+      "  `template`:",
+      "    # Here you can use HTML DSL",
+      "    tDiv:",
+      "      \"Hello, world!\"",
+      "  `script`:",
+      "    # Here you can use real Nim code",
+      "    discard",
+      "  `style` as css:", 
+      "    # Here you can use CSS DSL",
+      "    discard"
+    ],
+    "description": "HappyX component declaration"
+  },
+  "Request Model Declaration": {
+    "prefix": ["model", "requestModel"],
+    "body": [
+      "model ${1:ModelName}:",
+      "  # Here you can assign request body fields",
+      "  ${2:field1}: ${3:string}",
+      "  # They are can be optionally",
+      "  ${4:field2}: ${5:string}"
+    ],
+    "description": "HappyX Request Model declaration"
+  },
+  "Mount Declaration": {
+    "prefix": ["mount"],
+    "body": [
+      "mount ${1:MountName}:",
+      "  \"/\":",
+      "    # Root of ${1:MountName}",
+      "    \"Hello, world!\""
+    ],
+    "description": "HappyX Mount declaration"
+  },
+  "Path Params": {
+    "prefix": ["path-params"],
+    "body": [
+      "pathParams:",
+      "  ${1:id}:  # Argument named \"${1:id}\"",
+      "    type ${2:int}",
+      "    optional  # Argument is optional",
+      "    mutable  # Argument is mutable",
+      "    default = ${3:100}"
+    ],
+    "description": "HappyX Path Params declaration"
+  },
+  "Register CORS": {
+    "prefix": ["register-cors", "cors", "reg-cors"],
+    "body": [
+      "regCORS:",
+      "  credentials: true",
+      "  origins: \"https://www.google.com\"  # You can send request from this address",
+      "  methods: [\"GET\", \"POST\", \"PUT\"]",
+      "  headers: \"*\""
+    ],
+    "description": "HappyX CORS registration"
+  }
+}

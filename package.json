@@ -1,0 +1,35 @@
+{
+  "name": "happyx",
+  "displayName": "HappyX",
+  "description": "HappyX web framework for Visual Studio Code",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.79.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "happyx",
+      "aliases": ["HappyX", "happyx", "hpx"],
+      "extensions": [".nim",".nims"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "happyx",
+      "scopeName": "source.nim",
+      "path": "./syntaxes/happyx.tmLanguage.json",
+      "embeddedLanguages": {
+        "meta.embedded.block.javascript": "javascript",
+        "meta.embedded.block.c": "c",
+        "meta.embedded.block.cpp": "cpp",
+        "meta.embedded.block.asm": "asm"
+      }
+    }],
+    "snippets": [{
+      "language": "happyx",
+      "path": "./snippets/snippets.json"
+    }]
+  }
+}
