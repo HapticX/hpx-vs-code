@@ -2,7 +2,8 @@
   "name": "happyx",
   "displayName": "HappyX",
   "description": "HappyX web framework for Visual Studio Code",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "publisher": "HapticX",
   "engines": {
     "vscode": "^1.79.0"
   },
@@ -23,6 +24,7 @@
       "embeddedLanguages": {
         "meta.embedded.block.javascript": "javascript",
         "meta.embedded.block.c": "c",
+        "meta.embedded.block.markdown": "markdown",
         "meta.embedded.block.cpp": "cpp",
         "meta.embedded.block.asm": "asm"
       }
@@ -30,6 +32,20 @@
     "snippets": [{
       "language": "happyx",
       "path": "./snippets/snippets.json"
-    }]
+    }],
+    "activationEvents": [
+        "onLanguage:nim"
+    ],
+    "scripts": {
+      "vscode:prepublish": "npm run compile",
+      "compile": "tsc -p ./",
+      "watch": "tsc -watch -p ./"
+    },
+    "devDependencies": {
+      "@types/node": "^8.10.25",
+      "@types/vscode": "^1.51.0",
+      "tslint": "^5.16.0",
+      "typescript": "^3.4.5"
+    }
   }
 }

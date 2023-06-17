@@ -9,22 +9,19 @@
 			"include": "#keywords"
 		},
 		{
+			"include": "#comments"
+		},
+		{
 			"include": "#pragmas"
 		},
 		{
 			"include": "#stringBlocks"
 		},
 		{
-			"include": "#asmCode"
-		},
-		{
 			"include": "#functions"
 		},
 		{
 			"include": "#operators"
-		},
-		{
-			"include": "#comments"
 		}
 	],
 	"repository": {
@@ -40,7 +37,7 @@
 				},
 				{
 					"name": "keyword.builtin.happyx",
-					"match": "\\b(echo|defined|declared|declaredInScope|shl|shr|div|mod|nil|xor|notin|in|out)\\b"
+					"match": "\\b(echo|defined|declared|declaredInScope|shl|shr|div|mod|nil|xor|notin|in|out|await|waitFor|asyncCheck)\\b"
 				},
 				{
 					"name": "keyword.macros.happyx",
@@ -66,6 +63,7 @@
 		},
 		"stringBlocks": {
 			"patterns": [
+				{"include": "#asmCode"},
 				{"include": "#strings"},
 				{"include": "#regexString"}
 			]
@@ -77,7 +75,7 @@
 		},
 		"strings": {
 			"name": "string.quoted.double.happyx",
-			"begin": "(?!re)\"",
+			"begin": "\"",
 			"end": "\"",
 			"patterns": [
 				{
@@ -158,20 +156,38 @@
 			]
 			
 		},
+		"commentSingleLineDoc": {
+			"name": "comment.line.number-sign.happyx",
+			"begin": "^##(?!\\[)",
+			"end": "$",
+			"patterns": [
+				{"include": "text.html.markdown"}
+			]
+		},
+		"commentMultilineDoc": {
+			"name": "comment.block.happyx",
+			"begin": "##\\[",
+			"end": "\\]##",
+			"patterns": [
+				{"include": "text.html.markdown"}
+			]
+		},
 		"comments": {
 			"patterns": [
+				{"include": "#commentSingleLineDoc"},
+				{"include": "#commentMultilineDoc"},
 				{
 					"name": "comment.block.happyx",
 					"begin": "#\\[",
-					"end": "\\]#"
-				},
-				{
-					"name": "comment.block.documentation.happyx",
-					"match": "##.*$"
+					"end": "\\]#(?!#)"
 				},
 				{
 					"name": "comment.line.number-sign.happyx",
-					"match": "#.*$"
+					"match": "##(?!\\[)"
+				},
+				{
+					"name": "comment.line.number-sign.happyx",
+					"match": "#[^#].*$"
 				}
 			]
 		},
@@ -184,7 +200,7 @@
 			]
 		},
 		"emitCpp": {
-			"name": "string.quoted.double.emit.happyx",
+			"name": "constant",
 			"begin": "(?<=\\s*\\bemit\\b\\s*:\\s*)\"\"\"",
 			"end": "\"\"\"",
 			"patterns": [

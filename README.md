@@ -7,7 +7,7 @@ Official VS Code plugin for use HappyX
 </div>
 
 ## Features ✨
-
+  
 - `Nim support`
   HappyX for VS Code supports default Nim and improves it!
 - `Code snippets`
