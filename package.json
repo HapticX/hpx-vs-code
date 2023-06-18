@@ -7,9 +7,13 @@
   "engines": {
     "vscode": "^1.79.2"
   },
+  "icon": "logo.png",
+  "pricing": "Free",
+  "repository": "https://github.com/HapticX/hpx-vs-code",
   "categories": [
     "Programming Languages"
   ],
+  "keywords": ["nim", "happyx"],
   "contributes": {
     "languages": [{
       "id": "happyx",
