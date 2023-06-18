@@ -2,27 +2,14 @@
 	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
 	"name": "HappyX",
 	"patterns": [
-		{
-			"include": "#pathParams"
-		},
-		{
-			"include": "#keywords"
-		},
-		{
-			"include": "#comments"
-		},
-		{
-			"include": "#pragmas"
-		},
-		{
-			"include": "#stringBlocks"
-		},
-		{
-			"include": "#functions"
-		},
-		{
-			"include": "#operators"
-		}
+		{"include": "#nimConstatns"},
+		{"include": "#pathParams"},
+		{"include": "#keywords"},
+		{"include": "#comments"},
+		{"include": "#pragmas"},
+		{"include": "#stringBlocks"},
+		{"include": "#functions"},
+		{"include": "#operators"}
 	],
 	"repository": {
 		"keywords": {
@@ -32,12 +19,16 @@
 					"match": "\\b(if|elif|else|case|of|while|for|return|asm|yield|when|interface|bind|using|break|continue|discard|static|block|do|defer|try|finally|raise|func|proc|method|iterator|type|template|macro|converter|cast|as|except|import|export|include|from|var|let|const)\\b"
 				},
 				{
+					"name": "keyword.control.happyx",
+					"match": "\\bnew\\b(?=[ \t]+[\\S])"
+				},
+				{
 					"name": "keyword.types.happyx",
-					"match": "\\b(object|enum|untyped|typed|string|char|tuple|seq|set|ref|ptr|pointer|sink|array|open[aA]rray|int\\d{0,2}|float\\d{0,2}|uint\\d{0,2})\\b"
+					"match": "\\b(object|enum|untyped|typed|string|char|auto|any|tuple|seq|set|ref|ptr|pointer|sink|array|open[aA]rray|int\\d{0,2}|float\\d{0,2}|uint\\d{0,2})\\b"
 				},
 				{
 					"name": "keyword.builtin.happyx",
-					"match": "\\b(echo|defined|declared|declaredInScope|shl|shr|div|mod|nil|xor|notin|in|out|await|waitFor|asyncCheck)\\b"
+					"match": "\\b(echo|defined|declared|declaredInScope|shl|shr|div|mod|xor|notin|in|out|await|waitFor|asyncCheck)\\b"
 				},
 				{
 					"name": "keyword.macros.happyx",
@@ -58,6 +49,10 @@
 				{
 					"name": "keyword.httpMethods.happyx",
 					"match": "^[ \t]+\\b(wsConnect|wsError|wsMismatchProtocol|wsClosed|notfound|middleware)\\b"
+				},
+				{
+					"name": "constant.language.happyx",
+					"match": "^[ \t]+\\b(true|false|on|off|disable|enable|nil)\\b"
 				}
 			]
 		},
@@ -127,7 +122,7 @@
 			"patterns": [
 				{
 					"name": "keyword.operator.happyx",
-					"match": "([\\+=\\-\\?<>!@~\\$%\\^&\\*:№/\\\\]+)"
+					"match": "([\\+=\\-\\?<>!@~\\$%\\^&\\*:№/\\\\\\.]+)"
 				}
 			]
 		},
@@ -190,17 +185,54 @@
 			"name": "string.quoted.double.asm.happyx",
 			"begin": "(?<=asm\\s+)\"\"\"",
 			"end": "\"\"\"",
-			"patterns": [
-				{"include": "source.asm"}
-			]
+			"patterns": [{"include": "source.asm"}]
+		},
+		"emitDefault": {
+			"name": "constant.happyx",
+			"begin": "(?<=\\s*\\bemit\\b\\s*:\\s*)\"{1,3}(?!\\s*\\/\\/\\s*(c|js|javascript|cpp|c\\+\\+|objc))",
+			"end": "\"{1,3}",
+			"patterns": [{"include": "source.cpp"}]
+		},
+		"emitC": {
+			"name": "constant.happyx",
+			"begin": "(?<=\\s*\\bemit\\b\\s*:\\s*)\"\"\"\\s*\\/\\/\\s*c",
+			"end": "\"\"\"",
+			"patterns": [{"include": "source.c"}]
 		},
 		"emitCpp": {
-			"name": "constant",
-			"begin": "(?<=\\s*\\bemit\\b\\s*:\\s*)\"\"\"",
+			"name": "constant.happyx",
+			"begin": "(?<=\\s*\\bemit\\b\\s*:\\s*)\"\"\"\\s*\\/\\/\\s*(cpp|c\\+\\+)",
 			"end": "\"\"\"",
+			"patterns": [{"include": "source.cpp"}]
+		},
+		"emitObjC": {
+			"name": "constant.happyx",
+			"begin": "(?<=\\s*\\bemit\\b\\s*:\\s*)\"\"\"\\s*\\/\\/\\s*objc",
+			"end": "\"\"\"",
+			"patterns": [{"include": "source.objc"}]
+		},
+		"emitJs": {
+			"name": "constant.happyx",
+			"begin": "(?<=\\s*\\bemit\\b\\s*:\\s*)\"\"\"\\s*\\/\\/\\s*(js|javascript)",
+			"end": "\"\"\"",
+			"patterns": [{"include": "source.js"}]
+		},
+		"codeGenPragma": {
+			"name": "string.quoted.double.happyx",
+			"begin": "(?<=\\s*\\bcodegenDecl\\b\\s*:\\s*)\"",
+			"end": "\"",
 			"patterns": [
-				{"include": "source.cpp"}
+				{
+					"name": "entity.name.class.happyx",
+					"match": "\\$#"
+				}
 			]
+		},
+		"passPragma": {
+			"name": "string.quoted.double.happyx",
+			"begin": "(?<=\\s*\\b(pass|passc|passl|localPassc)\\b\\s*:\\s*)\"",
+			"end": "\"",
+			"patterns": [{"include": "meta.statement.command.shell"}]
 		},
 		"pragmas": {
 			"name": "entity.other.happyx",
@@ -208,11 +240,41 @@
 			"end": "\\.\\}",
 			"patterns": [
 				{
-					"name": "keyword.control.happyx",
+					"name": "entity.name.function.happyx",
 					"match": "\\b(async|multisync|pragma|gcsafe|inline|noSideEffect|push|pop)\\b"
 				},
-				{"include": "#emitCpp"}
+				{"include": "#emitCpp"},
+				{"include": "#emitC"},
+				{"include": "#emitJs"},
+				{"include": "#emitDefault"},
+				{"include": "#codeGenPragma"},
+				{"include": "#passPragma"},
+				{"include": "#strings"},
+				{
+					"name": "entity.name.function.happyx",
+					"match": "\\b(emit|pass[lc]?|codegenDecl|nodecl|cdecl|compileTime|noReturn|acyclic|final|shallow|pure|line|linearScanEnd)\\b"
+				},
+				{
+					"name": "entity.name.function.happyx",
+					"match": "\\b(computedGoto|checks|optimization|boundChecks|overflowChecks|nilChecks|assertions|hints|patterns|callconv)\\b"
+				},
+				{
+					"name": "entity.name.function.happyx",
+					"match": "\\b(register|global|used|experimental|bitsize|align|volatile|header|incompleteStruct|compile|link|localPassc|importcpp|importc|importjs|importobjc)\\b"
+				},
+				{
+					"name": "entity.name.function.happyx",
+					"match": "\\b(cppNonPod|intdefine|strdefine|booldefine|exportc|extern|bycopy|varargs|union|packed|dynlib|threadvar|noInit|requiresInit|borrow)\\b"
+				},
+				{
+					"name": "markup.bold.happyx",
+					"match": "\\b(warning|error|deprecated|fatal)\\b"
+				}
 			]
+		},
+		"nimConstatns": {
+			"name": "markup.heading",
+			"match": "\\b(appType|CompileDate|CompileTime|cpuEndian|hostCPU|hostOS|Inf|isMainModule|NaN|NegInf|NimMajor|NimMinor|NimPatch|NimVersion|QuitSuccess|QuitFailure)\\b"
 		}
 	},
 	"scopeName": "source.nim"
