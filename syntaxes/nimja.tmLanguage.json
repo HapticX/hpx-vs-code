@@ -1,0 +1,75 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Nimja",
+	"scopeName": "source.nimja",
+  "patterns": [
+    {"include": "#keywords"},
+    {"include": "#nim"},
+    {"include": "#comments"},
+    {"include": "#tags"},
+    {"include": "#operators"}
+  ],
+	"repository": {
+    "keywords": {
+      "begin": "\\{%",
+      "end": "%\\}",
+      "patterns": [
+        {
+          "name": "keyword.control.nimja",
+          "match": "\\b(extends|scope|endscope|block|endblock|endproc|endtemplate|enditerator|endfunc|endmacro|end|importnimja|endif|endwhen|endfor|endwhile)\\b"
+        },
+        {
+          "name": "markup.bold.nimja",
+          "match": "(?<=(extends|block|endblock)\\s*)[^\\s~!@$%^&\\[\\](){}]+"
+        },
+        {"include": "source.nim"}
+      ]
+    },
+    "nim": {
+      "begin": "\\{\\{",
+      "end": "\\}\\}",
+      "patterns": [
+        {"include": "source.nim"}
+      ]
+    },
+		"strings": {
+			"name": "string.quoted.double.nimja",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.nimja",
+					"match": "\\\\."
+				}
+			]
+		},
+    "operators": {
+      "name": "keyword.control.nimja",
+      "match": "[\\+%!~`@№$^&?<>:_\\-=\\*]+"
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.block.documentation.nimja",
+          "begin": "\\{#",
+          "end": "#\\}"
+        }
+      ]
+    },
+    "tags": {
+      "begin": "<\\/?",
+      "end": ">",
+      "patterns": [
+        {
+          "name": "keyword.control.nimja",
+          "match": "(?<=\\<\\/?\\s*)[a-zA-Z][a-zA-Z0-9\\-_]*"
+        },
+        {
+          "name": "entity.name.class.nimja",
+          "match": "\\b[a-zA-Z][a-zA-Z0-9_\\-]*\\b(?=\\s*=\\s*)"
+        },
+        {"include": "#strings"}
+      ]
+    }
+  }
+}

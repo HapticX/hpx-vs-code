@@ -1,0 +1,15 @@
+{
+  "iconDefinitions": {
+    "nim_lang": {
+      "iconPath": "./nim.svg"
+    },
+    "nimja_template": {
+      "iconPath": "./nimja.svg"
+    }
+  },
+  "fileExtensions": {
+    "nim": "nim_lang",
+    "nimble": "nim_lang",
+    "nimja": "nimja_template"
+  }
+}

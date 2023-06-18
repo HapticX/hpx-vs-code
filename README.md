@@ -10,6 +10,8 @@ Official VS Code plugin for use HappyX
   
 - `Nim support`
   HappyX for VS Code supports default Nim and improves it!
+- `Nimja files support`
+  HappyX also supports `.nimja` template files
 - `Emit language support`
   You can specify which language you're use
   ![Emit](https://github.com/HapticX/hpx-vs-code/blob/master/images/emit.png)

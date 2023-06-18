@@ -2,48 +2,76 @@
   "name": "happyx",
   "displayName": "HappyX",
   "description": "HappyX web framework for Visual Studio Code",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "publisher": "HapticX",
   "license": "MIT",
-  "engines": {
-    "vscode": "^1.79.2"
-  },
   "icon": "logo.png",
   "pricing": "Free",
   "repository": "https://github.com/HapticX/hpx-vs-code",
-  "categories": [
-    "Programming Languages"
-  ],
+  "categories": ["Programming Languages"],
+  "keywords": ["nim", "happyx", "nimja", "nimble"],
+  "engines": {
+    "vscode": "^1.79.2"
+  },
   "galleryBanner": {
-    "color": "#728290",
+    "color": "#EF7575",
     "theme": "dark"
   },
-  "keywords": ["nim", "happyx"],
   "contributes": {
-    "languages": [{
-      "id": "happyx",
-      "aliases": ["HappyX", "happyx", "hpx"],
-      "extensions": [".nim",".nims"],
-      "configuration": "./language-configuration.json"
-    }],
-    "grammars": [{
-      "language": "happyx",
-      "scopeName": "source.nim",
-      "path": "./syntaxes/happyx.tmLanguage.json",
-      "embeddedLanguages": {
-        "meta.embedded.block.javascript": "javascript",
-        "meta.embedded.block.c": "c",
-        "meta.embedded.block.markdown": "markdown",
-        "meta.embedded.block.cpp": "cpp",
-        "meta.embedded.block.asm": "asm"
+    "iconThemes": [
+      {
+        "id": "happyx",
+        "label": "HappyX",
+        "path": "./icons/hpx_icons.json"
       }
-    }],
-    "snippets": [{
-      "language": "happyx",
-      "path": "./snippets/snippets.json"
-    }],
+    ],
+    "languages": [
+      {
+        "id": "happyx",
+        "aliases": ["HappyX", "happyx", "hpx", "nim"],
+        "extensions": [".nim",".nims"],
+        "configuration": "./configurations/happyx-configuration.json"
+      },
+      {
+        "id": "nimble",
+        "aliases": ["Nimble"],
+        "extensions": [".nimble"],
+        "configuration": "./configurations/nimble-configuration.json"
+      },
+      {
+        "id": "nimja",
+        "aliases": ["Nimja", "nimja"],
+        "extensions": [".nimja"],
+        "configuration": "./configurations/nimja-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "happyx",
+        "scopeName": "source.nim",
+        "path": "./syntaxes/happyx.tmLanguage.json"
+      },
+      {
+        "language": "nimble",
+        "scopeName": "source.nimble",
+        "path": "./syntaxes/nimble.tmLanguage.json"
+      },
+      {
+        "language": "nimja",
+        "scopeName": "source.nimja",
+        "path": "./syntaxes/nimja.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "happyx",
+        "path": "./snippets/snippets.json"
+      }
+    ],
     "activationEvents": [
-        "onLanguage:nim"
+      "onLanguage:happyx",
+      "onLanguage:nimble",
+      "onLanguage:nimja"
     ],
     "scripts": {
       "vscode:prepublish": "npm run compile",
