@@ -59,5 +59,23 @@
       "  headers: \"*\""
     ],
     "description": "HappyX CORS registration"
+  },
+  "Application Routes": {
+    "prefix": ["app-routes"],
+    "body": [
+      "appRoutes(${1:\"app\"}):",
+      "  \"/\":",
+      "    \"Hello, world!\""
+    ],
+    "description": "HappyX CORS registration"
+  },
+  "Serve": {
+    "prefix": ["serve"],
+    "body": [
+      "serve(${1:\"127.0.0.1\"}, ${2:5000}):",
+      "  get \"/\":",
+      "    \"Hello, world!\""
+    ],
+    "description": "HappyX CORS registration"
   }
 }

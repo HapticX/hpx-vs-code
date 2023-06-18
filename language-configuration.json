@@ -48,6 +48,10 @@
             "action": { "indent": "indent" }
         },
         {
+            "beforeText": "^\\s*(?:serve|appRoutes|\"[^\"\n]+\"|get|put|link|delete|post|options|ws|wsConnect|wsClosed|wsError|wsMismatchProtocol).*?:\\s*$",
+            "action": { "indent": "indent" }
+        },
+        {
             "beforeText": "^\\s*(?:proc|func|method|iterator|converter|template|macro).*?=\\s*$",
             "action": { "indent": "indent" }
         },
