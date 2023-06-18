@@ -40,8 +40,7 @@
         }
     },
     "indentationRules": {
-        "increaseIndentPattern": "^((?!\\/\\/).)*(:\n*|\\([^)\"'`]*|\\[[^\\]\"'`]*)$",
-        "decreaseIndentPattern": "^((?!.*?\\/\\*).*\\*/)?\\s*[\\)\\}\\]].*$"
+        "increaseIndentPattern": "^((?!#).)*(:\n*|\\([^)\"'`]*|\\[[^\\]\"'`]*)$",
     },
     "onEnterRules": [
         {
@@ -51,6 +50,10 @@
         {
             "beforeText": "^\\s*(?:proc|func|method|iterator|converter|template|macro).*?=\\s*$",
             "action": { "indent": "indent" }
+        },
+        {
+            "beforeText": "^(\\s+)[^\n]+\\n\\1",
+            "action": { "indent": "outdent" }
         },
         {
             "beforeText": "^\\s*(?:##).*?\\s*$",

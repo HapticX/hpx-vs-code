@@ -2,7 +2,7 @@
   "name": "happyx",
   "displayName": "HappyX",
   "description": "HappyX web framework for Visual Studio Code",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "HapticX",
   "engines": {
     "vscode": "^1.79.2"
