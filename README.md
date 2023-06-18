@@ -8,8 +8,8 @@ Official VS Code plugin for use HappyX
 
 ## Features ✨
   
-- `Nim support`
-  HappyX for VS Code supports default Nim and improves it!
+- `Nim and nimble support`
+  HappyX for VS Code supports default Nim and Nimble and improves it!
 - `Nimja files support`
   HappyX also supports `.nimja` template files
 - `Emit language support`
