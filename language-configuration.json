@@ -15,6 +15,8 @@
     "autoClosingPairs": [
         ["{.", ".}"],
         ["{", "}"],
+        ["##[", "]##"],
+        ["#[", "]#"],
         ["[", "]"],
         ["(", ")"],
         ["\"\"\"", "\"\"\""],
@@ -30,5 +32,32 @@
         ["\"", "\""],
         ["\"\"\"", "\"\"\""],
         ["'", "'"]
+    ],
+    "folding": {
+        "markers": {
+            "start": "^\\s*//\\s*#?region\\b",
+            "end": "^\\s*//\\s*#?endregion\\b"
+        }
+    },
+    "indentationRules": {
+        "increaseIndentPattern": "^((?!\\/\\/).)*(:\n*|\\([^)\"'`]*|\\[[^\\]\"'`]*)$",
+        "decreaseIndentPattern": "^((?!.*?\\/\\*).*\\*/)?\\s*[\\)\\}\\]].*$"
+    },
+    "onEnterRules": [
+        {
+            "beforeText": "^\\s*(?:if|elif|else|when|of|while|for|do|block).*?:\\s*$",
+            "action": { "indent": "indent" }
+        },
+        {
+            "beforeText": "^\\s*(?:proc|func|method|iterator|converter|template|macro).*?=\\s*$",
+            "action": { "indent": "indent" }
+        },
+        {
+            "beforeText": "^\\s*(?:##).*?\\s*$",
+            "action": {
+                "indent": "none",
+                "appendText": "## "
+            }
+        }
     ]
 }

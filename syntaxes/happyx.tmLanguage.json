@@ -154,11 +154,10 @@
 					"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)(?=\\s*\")"
 				}
 			]
-			
 		},
 		"commentSingleLineDoc": {
 			"name": "comment.line.number-sign.happyx",
-			"begin": "^##(?!\\[)",
+			"begin": "##(?!\\[)",
 			"end": "$",
 			"patterns": [
 				{"include": "text.html.markdown"}
@@ -180,10 +179,6 @@
 					"name": "comment.block.happyx",
 					"begin": "#\\[",
 					"end": "\\]#(?!#)"
-				},
-				{
-					"name": "comment.line.number-sign.happyx",
-					"match": "##(?!\\[)"
 				},
 				{
 					"name": "comment.line.number-sign.happyx",
