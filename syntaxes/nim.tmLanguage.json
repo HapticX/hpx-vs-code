@@ -1,11 +1,11 @@
 {
 	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-	"name": "HappyX",
+	"name": "Nim",
 	"patterns": [
 		{"include": "#nimConstatns"},
 		{"include": "#pathParams"},
-		{"include": "#keywords"},
 		{"include": "#comments"},
+		{"include": "#keywords"},
 		{"include": "#pragmas"},
 		{"include": "#stringBlocks"},
 		{"include": "#functions"},
@@ -15,43 +15,35 @@
 		"keywords": {
 			"patterns": [
 				{
-					"name": "keyword.control.happyx",
+					"name": "keyword.control.nim",
 					"match": "\\b(if|elif|else|case|of|while|for|return|asm|yield|when|interface|bind|using|break|continue|discard|static|block|do|defer|try|finally|raise|func|proc|method|iterator|type|template|macro|converter|cast|as|except|import|export|include|from|var|let|const)\\b"
-				},
-				{
-					"name": "keyword.control.happyx",
+				}, {
+					"name": "keyword.control.nim",
 					"match": "\\bnew\\b(?=[ \t]+[\\S])"
-				},
-				{
-					"name": "keyword.types.happyx",
+				}, {
+					"name": "keyword.types.nim",
 					"match": "\\b(object|enum|untyped|typed|string|char|auto|any|tuple|seq|set|ref|ptr|pointer|sink|array|open[aA]rray|int\\d{0,2}|float\\d{0,2}|uint\\d{0,2})\\b"
-				},
-				{
-					"name": "keyword.builtin.happyx",
+				}, {
+					"name": "keyword.builtin.nim",
 					"match": "\\b(echo|defined|declared|declaredInScope|shl|shr|div|mod|xor|notin|in|out|await|waitFor|asyncCheck)\\b"
-				},
-				{
-					"name": "keyword.macros.happyx",
+				}, {
+					"name": "keyword.macros.nim",
 					"match": "\\b(model|serve|appRoutes|component|mount|regCORS|pathParams|remember)\\b"
-				},
-				{
-					"name": "keyword.components.happyx",
+				}, {
+					"name": "keyword.components.nim",
 					"match": "`\\b(script|style)\\b`\\s+as\\s+\\b(css|js)\\b"
-				},
-				{
-					"name": "keyword.components.happyx",
+				}, {
+					"name": "keyword.components.nim",
 					"match": "`\\b(template|script|style)\\b`"
-				},
-				{
-					"name": "keyword.httpMethods.happyx",
+				}, {
+					"name": "keyword.httpMethods.nim",
 					"match": "^[ \t]+\\b(get|post|put|link|delete|patch|options|ws)\\b(?=\\s+\")"
 				},
 				{
-					"name": "keyword.httpMethods.happyx",
+					"name": "keyword.httpMethods.nim",
 					"match": "^[ \t]+\\b(wsConnect|wsError|wsMismatchProtocol|wsClosed|notfound|middleware)\\b"
-				},
-				{
-					"name": "constant.language.happyx",
+				}, {
+					"name": "constant.language.nim",
 					"match": "^[ \t]+\\b(true|false|on|off|disable|enable|nil)\\b"
 				}
 			]
@@ -64,56 +56,49 @@
 			]
 		},
 		"regexString": {
-			"name": "string.regex.happyx",
+			"name": "string.regex.nim",
 			"begin": "(?<=re)\"",
 			"end": "\""
 		},
 		"strings": {
-			"name": "string.quoted.double.happyx",
+			"name": "string.quoted.double.nim",
 			"begin": "\"",
 			"end": "\"",
 			"patterns": [
 				{
-					"name": "constant.character.escape.happyx",
+					"name": "constant.character.escape.nim",
 					"match": "\\\\."
 				}
 			]
 		},
 		"pathParams": {
-			"name": "string.quoted.double.happyx",
+			"name": "string.quoted.double.nim",
 			"begin": "(?<=^\\s+\\b(get|post|put|link|delete|patch|options|ws)\\b\\s+)\"",
 			"end": "\"",
 			"patterns": [
 				{
-					"name": "entity.name.class.happyx",
+					"name": "entity.name.class.nim",
 					"match": "(?<=\\{[a-zA-Z][a-zA-Z0-9_]*(:[a-zA-Z][a-zA-Z0-9_]*)?\\[)m(?=\\])"
-				},
-				{
-					"name": "entity.name.class.happyx",
+				}, {
+					"name": "entity.name.class.nim",
 					"match": "(?<=\\$[a-zA-Z][a-zA-Z0-9_]*(:[a-zA-Z][a-zA-Z0-9_]*)?\\[)m(?=\\])"
-				},
-				{
-					"name": "entity.name.class.happyx",
+				}, {
+					"name": "entity.name.class.nim",
 					"match": "(?<=\\$[a-zA-Z][a-zA-Z0-9_]*:)[a-zA-Z][a-zA-Z0-9_]*"
-				},
-				{
-					"name": "entity.name.class.happyx",
+				}, {
+					"name": "entity.name.class.nim",
 					"match": "(?<=\\{[a-zA-Z][a-zA-Z0-9_]*:)[a-zA-Z][a-zA-Z0-9_]*"
-				},
-				{
-					"name": "entity.name.function.happyx",
+				}, {
+					"name": "entity.name.function.nim",
 					"match": "\\$[a-zA-Z][a-zA-Z0-9_]*"
-				},
-				{
-					"name": "entity.name.function.happyx",
+				}, {
+					"name": "entity.name.function.nim",
 					"match": "(?<=\\{)[a-zA-Z][a-zA-Z0-9_]*"
-				},
-				{
-					"name": "entity.name.function.happyx",
+				}, {
+					"name": "entity.name.function.nim",
 					"match": "<[a-zA-Z][a-zA-Z0-9_]*>"
-				},
-				{
-					"name": "entity.name.function.happyx",
+				}, {
+					"name": "entity.name.function.nim",
 					"match": "\\[[a-zA-Z][a-zA-Z0-9_]*:[a-zA-Z][a-zA-Z0-9_]*\\]"
 				}
 			]
@@ -121,7 +106,7 @@
 		"operators": {
 			"patterns": [
 				{
-					"name": "keyword.operator.happyx",
+					"name": "keyword.operator.nim",
 					"match": "([\\+=\\-\\?<>!@~\\$%\\^&\\*:№/\\\\\\.]+)"
 				}
 			]
@@ -129,37 +114,33 @@
 		"functions": {
 			"patterns": [
 				{
-					"name": "entity.name.class.happyx",
+					"name": "entity.name.class.nim",
 					"match": "\\b[A-Z][A-Za-z0-9_]*\\b"
-				},
-				{
-					"name": "entity.name.function.happyx",
+				}, {
+					"name": "entity.name.function.nim",
 					"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\("
-				},
-				{
-					"name": "entity.name.function.happyx",
+				}, {
+					"name": "entity.name.function.nim",
 					"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s+(?=[\\w\\d]+)"
-				},
-				{
-					"name": "entity.name.function.happyx",
+				}, {
+					"name": "entity.name.function.nim",
 					"match": "(?<=\\([\\s+\\S]+?\\))\\s*\\b([a-zA-Z_][a-zA-Z0-9_]*)"
-				},
-				{
-					"name": "entity.name.function.happyx",
+				}, {
+					"name": "entity.name.function.nim",
 					"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)(?=\\s*\")"
 				}
 			]
 		},
 		"commentSingleLineDoc": {
-			"name": "comment.line.number-sign.happyx",
+			"name": "comment.block.documentation.nim",
 			"begin": "##(?!\\[)",
-			"end": "$",
+			"end": "$(?=\\s*)",
 			"patterns": [
 				{"include": "text.html.markdown"}
 			]
 		},
 		"commentMultilineDoc": {
-			"name": "comment.block.happyx",
+			"name": "comment.block.nim",
 			"begin": "##\\[",
 			"end": "\\]##",
 			"patterns": [
@@ -171,76 +152,75 @@
 				{"include": "#commentSingleLineDoc"},
 				{"include": "#commentMultilineDoc"},
 				{
-					"name": "comment.block.happyx",
+					"name": "comment.block.nim",
 					"begin": "#\\[",
 					"end": "\\]#(?!#)"
-				},
-				{
-					"name": "comment.line.number-sign.happyx",
+				}, {
+					"name": "comment.line.number-sign.nim",
 					"match": "#[^#].*$"
 				}
 			]
 		},
 		"asmCode": {
-			"name": "string.quoted.double.asm.happyx",
+			"name": "string.quoted.double.asm.nim",
 			"begin": "(?<=asm\\s+)\"\"\"",
 			"end": "\"\"\"",
 			"patterns": [{"include": "source.asm"}]
 		},
 		"emitDefault": {
-			"name": "constant.happyx",
+			"name": "constant.nim",
 			"begin": "(?<=\\s*\\bemit\\b\\s*:\\s*)\"{1,3}(?!\\s*\\/\\/\\s*(c|js|javascript|cpp|c\\+\\+|objc))",
 			"end": "\"{1,3}",
 			"patterns": [{"include": "source.cpp"}]
 		},
 		"emitC": {
-			"name": "constant.happyx",
+			"name": "constant.nim",
 			"begin": "(?<=\\s*\\bemit\\b\\s*:\\s*)\"\"\"\\s*\\/\\/\\s*c",
 			"end": "\"\"\"",
 			"patterns": [{"include": "source.c"}]
 		},
 		"emitCpp": {
-			"name": "constant.happyx",
+			"name": "constant.nim",
 			"begin": "(?<=\\s*\\bemit\\b\\s*:\\s*)\"\"\"\\s*\\/\\/\\s*(cpp|c\\+\\+)",
 			"end": "\"\"\"",
 			"patterns": [{"include": "source.cpp"}]
 		},
 		"emitObjC": {
-			"name": "constant.happyx",
+			"name": "constant.nim",
 			"begin": "(?<=\\s*\\bemit\\b\\s*:\\s*)\"\"\"\\s*\\/\\/\\s*objc",
 			"end": "\"\"\"",
 			"patterns": [{"include": "source.objc"}]
 		},
 		"emitJs": {
-			"name": "constant.happyx",
+			"name": "constant.nim",
 			"begin": "(?<=\\s*\\bemit\\b\\s*:\\s*)\"\"\"\\s*\\/\\/\\s*(js|javascript)",
 			"end": "\"\"\"",
 			"patterns": [{"include": "source.js"}]
 		},
 		"codeGenPragma": {
-			"name": "string.quoted.double.happyx",
-			"begin": "(?<=\\s*\\bcodegenDecl\\b\\s*:\\s*)\"",
+			"name": "string.quoted.double.nim",
+			"begin": "(?<=\\s*\\b(codegenDecl|importc|importcpp|importjs|importobjc)\\b\\s*:\\s*)\"",
 			"end": "\"",
 			"patterns": [
 				{
-					"name": "entity.name.class.happyx",
-					"match": "\\$#"
+					"name": "entity.name.class.nim",
+					"match": "(\\$#|\\$\\d+)"
 				}
 			]
 		},
 		"passPragma": {
-			"name": "string.quoted.double.happyx",
+			"name": "string.quoted.double.nim",
 			"begin": "(?<=\\s*\\b(pass|passc|passl|localPassc)\\b\\s*:\\s*)\"",
 			"end": "\"",
 			"patterns": [{"include": "meta.statement.command.shell"}]
 		},
 		"pragmas": {
-			"name": "entity.other.happyx",
+			"name": "entity.other.nim",
 			"begin": "\\{\\.",
 			"end": "\\.\\}",
 			"patterns": [
 				{
-					"name": "entity.name.function.happyx",
+					"name": "entity.name.function.nim",
 					"match": "\\b(async|multisync|pragma|gcsafe|inline|noSideEffect|push|pop)\\b"
 				},
 				{"include": "#emitCpp"},
@@ -251,29 +231,25 @@
 				{"include": "#passPragma"},
 				{"include": "#strings"},
 				{
-					"name": "entity.name.function.happyx",
+					"name": "entity.name.function.nim",
 					"match": "\\b(emit|pass[lc]?|codegenDecl|nodecl|cdecl|compileTime|noReturn|acyclic|final|shallow|pure|line|linearScanEnd)\\b"
-				},
-				{
-					"name": "entity.name.function.happyx",
+				}, {
+					"name": "entity.name.function.nim",
 					"match": "\\b(computedGoto|checks|optimization|boundChecks|overflowChecks|nilChecks|assertions|hints|patterns|callconv)\\b"
-				},
-				{
-					"name": "entity.name.function.happyx",
+				}, {
+					"name": "entity.name.function.nim",
 					"match": "\\b(register|global|used|experimental|bitsize|align|volatile|header|incompleteStruct|compile|link|localPassc|importcpp|importc|importjs|importobjc)\\b"
-				},
-				{
-					"name": "entity.name.function.happyx",
+				}, {
+					"name": "entity.name.function.nim",
 					"match": "\\b(cppNonPod|intdefine|strdefine|booldefine|exportc|extern|bycopy|varargs|union|packed|dynlib|threadvar|noInit|requiresInit|borrow)\\b"
-				},
-				{
-					"name": "markup.bold.happyx",
+				}, {
+					"name": "markup.bold.nim",
 					"match": "\\b(warning|error|deprecated|fatal)\\b"
 				}
 			]
 		},
 		"nimConstatns": {
-			"name": "markup.heading",
+			"name": "markup.heading.nim",
 			"match": "\\b(appType|CompileDate|CompileTime|cpuEndian|hostCPU|hostOS|Inf|isMainModule|NaN|NegInf|NimMajor|NimMinor|NimPatch|NimVersion|QuitSuccess|QuitFailure)\\b"
 		}
 	},

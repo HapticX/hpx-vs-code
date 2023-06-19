@@ -77,5 +77,14 @@
       "    \"Hello, world!\""
     ],
     "description": "HappyX CORS registration"
+  },
+  "Async Procedure": {
+    "prefix": ["async-proc", "async-func", "async-method"],
+    "body": [
+      "${1:proc} ${2:name}(${3:})${4:: Future[void]} {. async .} =",
+      "  ## ${5:This procedure makes ...}",
+      "  ${6:discard}"
+    ],
+    "description": "Nim async procedure"
   }
 }
