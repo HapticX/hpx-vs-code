@@ -11,8 +11,8 @@ bin         = @["extension"]
 
 # Deps
 
-requires "nim >= 1.3.7"
-requires "compiler >= 1.3.7"
+requires "nim >= 1.6.10"
+requires "compiler >= 1.6.10"
 
 import std/os
 
@@ -25,7 +25,7 @@ task main, "This compiles the vscode Nim extension":
   exec "nim js --outdir:out --checks:on --sourceMap src"/"extension.nim"
 
 task release, "This compiles a release version":
-  exec "nim js -d:release -d:danger --outdir:out --checks:off --sourceMap src"/"extension.nim"
+  exec "nim js -d:release -d:danger --opt:size --outdir:out --checks:off --sourceMap src"/"extension.nim"
 
 task vsix, "Build VSIX package":
   initialNpmInstall()

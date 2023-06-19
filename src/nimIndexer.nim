@@ -99,7 +99,7 @@ proc getFileSymbols*(
     var e = getCurrentException()
     console.error("getFileSymbols - failed", e)
     raise e
-  symbols
+  return symbols
 
 
 proc getDocumentSymbols*(

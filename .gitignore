@@ -1,2 +1,9 @@
 *.vsix
 package-lock.json
+out/
+node_modules/
+nimcache/
+/*.db
+src/nimsuggest/nimcache
+src/nimsuggest/nimsuggest.exe
+src/nimsuggest/nimsuggest

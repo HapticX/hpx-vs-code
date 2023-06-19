@@ -175,25 +175,25 @@
 		},
 		"emitC": {
 			"name": "constant.nim",
-			"begin": "(?<=\\s*\\bemit\\b\\s*:\\s*)\"\"\"\\s*\\/\\/\\s*c",
+			"begin": "(?<=\\s*\\bemit\\b\\s*:\\s*)\"\"\"(?=\\s*\\/\\/\\s*c)",
 			"end": "\"\"\"",
 			"patterns": [{"include": "source.c"}]
 		},
 		"emitCpp": {
 			"name": "constant.nim",
-			"begin": "(?<=\\s*\\bemit\\b\\s*:\\s*)\"\"\"\\s*\\/\\/\\s*(cpp|c\\+\\+)",
+			"begin": "(?<=\\s*\\bemit\\b\\s*:\\s*)\"\"\"(?=\\s*\\/\\/\\s*(cpp|c\\+\\+))",
 			"end": "\"\"\"",
 			"patterns": [{"include": "source.cpp"}]
 		},
 		"emitObjC": {
 			"name": "constant.nim",
-			"begin": "(?<=\\s*\\bemit\\b\\s*:\\s*)\"\"\"\\s*\\/\\/\\s*objc",
+			"begin": "(?<=\\s*\\bemit\\b\\s*:\\s*)\"\"\"(?=\\s*\\/\\/\\s*objc)",
 			"end": "\"\"\"",
 			"patterns": [{"include": "source.objc"}]
 		},
 		"emitJs": {
 			"name": "constant.nim",
-			"begin": "(?<=\\s*\\bemit\\b\\s*:\\s*)\"\"\"\\s*\\/\\/\\s*(js|javascript)",
+			"begin": "(?<=\\s*\\bemit\\b\\s*:\\s*)\"\"\"(?=\\s*\\/\\/\\s*(js|javascript))",
 			"end": "\"\"\"",
 			"patterns": [{"include": "source.js"}]
 		},

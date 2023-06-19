@@ -1,4 +1,16 @@
 .vscode/**
 .vscode-test/**
 .gitignore
-vsc-extension-quickstart.md
+.vscode/**
+src/nimsuggest/nimcache/**
+src/nimsuggest/nimsuggest.exe
+src/nimsuggest/nimsuggest
+typings/**
+out/test/**
+tests/**
+src/**
+**/*.map
+*.db
+vscodeNim/**
+tsconfig.json
+tslint.json

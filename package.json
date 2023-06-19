@@ -8,8 +8,16 @@
   "icon": "logo.png",
   "pricing": "Free",
   "repository": "https://github.com/HapticX/hpx-vs-code",
-  "categories": ["Programming Languages", "Linters"],
-  "keywords": ["nim", "happyx", "nimja", "nimble"],
+  "categories": [
+    "Programming Languages",
+    "Linters"
+  ],
+  "keywords": [
+    "nim",
+    "happyx",
+    "nimja",
+    "nimble"
+  ],
   "engines": {
     "vscode": "^1.79.2"
   },
@@ -30,18 +38,38 @@
     "languages": [
       {
         "id": "nim",
-        "aliases": ["HappyX", "happyx", "hpx", "nim"],
-        "extensions": [".nim",".nims"],
+        "aliases": [
+          "HappyX",
+          "happyx",
+          "hpx",
+          "nim"
+        ],
+        "extensions": [
+          ".nim",
+          ".nims"
+        ],
         "configuration": "./configurations/nim-configuration.json"
-      }, {
+      },
+      {
         "id": "nimble",
-        "aliases": ["Nimble"],
-        "extensions": [".nimble"],
+        "aliases": [
+          "Nimble",
+          "nimble"
+        ],
+        "extensions": [
+          ".nimble"
+        ],
         "configuration": "./configurations/nimble-configuration.json"
-      }, {
+      },
+      {
         "id": "nimja",
-        "aliases": ["Nimja", "nimja"],
-        "extensions": [".nimja"],
+        "aliases": [
+          "Nimja",
+          "nimja"
+        ],
+        "extensions": [
+          ".nimja"
+        ],
         "configuration": "./configurations/nimja-configuration.json"
       }
     ],
@@ -50,11 +78,13 @@
         "language": "nim",
         "scopeName": "source.nim",
         "path": "./syntaxes/nim.tmLanguage.json"
-      }, {
+      },
+      {
         "language": "nimble",
         "scopeName": "source.nimble",
         "path": "./syntaxes/nimble.tmLanguage.json"
-      }, {
+      },
+      {
         "language": "nimja",
         "scopeName": "source.nimja",
         "path": "./syntaxes/nimja.tmLanguage.json"
@@ -66,37 +96,33 @@
         "path": "./snippets/snippets.json"
       }
     ],
-    "activationEvents": [
-      "onLanguage:nim",
-      "onLanguage:nimble",
-      "onLanguage:nimja",
-      "onCommand:nim.build",
-      "onCommand:nim.run",
-      "onCommand:nim.runTest",
-      "onCommand:nim.execSelectionInTerminal"
-    ],
     "commands": [
       {
         "command": "nim.run.file",
         "title": "Run selected Nim file",
         "category": "Nim"
-      }, {
+      },
+      {
         "command": "nim.check",
         "title": "Check Nim project",
         "category": "Nim"
-      }, {
+      },
+      {
         "command": "nim.execSelectionInTerminal",
         "title": "Run Selection/Line in Nim Terminal",
         "category": "Nim"
-      }, {
+      },
+      {
         "command": "nim.clearCaches",
         "title": "Clear internal caches",
         "category": "Nim"
-      }, {
+      },
+      {
         "command": "nim.listCandidateProjects",
         "title": "List candidate nim projects",
         "category": "Nim"
-      }, {
+      },
+      {
         "command": "nim.restartNimsuggest",
         "title": "Restarts nimsuggest",
         "category": "Nim"
@@ -116,12 +142,14 @@
         "key": "F6",
         "command": "nim.run.file",
         "when": "editorLangId == 'nim'"
-      }, {
+      },
+      {
         "key": "ctrl+alt+b",
         "command": "nim.check",
         "when": "editorLangId == 'nim'"
-      }, {
-        "key": "shift+enter",
+      },
+      {
+        "key": "shift+F6",
         "command": "nim.execSelectionInTerminal",
         "when": "editorFocus && editorLangId == nim && !findInputFocussed && !replaceInputFocussed"
       }
@@ -144,43 +172,69 @@
             "fileRegex": {
               "type": "string",
               "description": "Source file regex"
-            }, "projectFile": {
+            },
+            "projectFile": {
               "type": "string",
               "description": "Project file path"
             }
           },
           "scope": "resource"
-        }, "nim.test-project": {
+        },
+        "nim.test-project": {
           "type": "string",
           "default": "",
           "description": "Optional test project.",
           "scope": "resource"
-        }, "nim.buildOnSave": {
+        },
+        "nim.buildOnSave": {
           "type": "boolean",
           "default": false,
           "description": "Execute build task from tasks.json file on save.",
           "scope": "resource"
-        }, "nim.buildCommand": {
+        },
+        "nim.buildCommand": {
           "type": "string",
           "default": "c",
           "description": "Nim build command (c, cpp, doc, etc)",
+          "enum": [
+            "c",
+            "js",
+            "cpp",
+            "objc",
+            "doc",
+            "doc2",
+            "r",
+            "rst2html",
+            "rst2tex",
+            "buildIndex",
+            "doc2tex",
+            "jsondoc",
+            "ctags",
+            "dumps",
+            "check",
+            "e"
+          ],
           "scope": "resource"
-        }, "nim.runOutputDirectory": {
+        },
+        "nim.runOutputDirectory": {
           "type": "string",
           "default": "",
           "description": "Output directory for run selected file command. The directory is relative to the workspace root.",
           "scope": "resource"
-        }, "nim.lintOnSave": {
+        },
+        "nim.lintOnSave": {
           "type": "boolean",
           "default": true,
           "description": "Check code by using 'nim check' on save.",
           "scope": "resource"
-        }, "nim.enableNimsuggest": {
+        },
+        "nim.enableNimsuggest": {
           "type": "boolean",
           "default": true,
           "description": "Enable calling nimsuggest process to provide completion suggestions, hover suggestions, etc.\nThis option requires restart to take effect.",
           "scope": "resource"
-        }, "nim.provider": {
+        },
+        "nim.provider": {
           "type": "string",
           "default": "nimsuggest",
           "description": "The backend to use for language features.",
@@ -190,50 +244,65 @@
             "none"
           ],
           "scope": "resource"
-        }, "nim.useNimsuggestCheck": {
+        },
+        "nim.useNimsuggestCheck": {
           "type": "boolean",
           "default": false,
           "description": "Use nimsuggest in order to run check, instead of the nim compiler.",
           "scope": "resource"
-        }, "nim.logNimsuggest": {
+        },
+        "nim.logNimsuggest": {
           "type": "boolean",
           "default": false,
           "description": "Enable verbose logging of nimsuggest to use profile directory."
-        }, "nim.licenseString": {
+        },
+        "nim.licenseString": {
           "type": "string",
           "default": "",
           "description": "Optional license text that will be inserted on nim file creation.",
           "scope": "resource"
-        }, "nim.nimsuggestRestartTimeout": {
+        },
+        "nim.nimsuggestRestartTimeout": {
           "type": "integer",
           "default": 60,
           "description": "Nimsuggest will be restarted after this timeout in minutes, if 0 then restart disabled.\nThis option requires restart to take effect."
-        }, "nim.nimprettyIndent": {
+        },
+        "nim.nimPrettyIndent": {
           "type": "integer",
           "default": 0,
-          "description": "Nimpretty: set the number of spaces that is used for indentation\n--indent:0 means autodetection (default behaviour).",
+          "description": "NimPretty: set the number of spaces that is used for indentation\n--indent:0 means autodetection (default behaviour).",
           "scope": "resource"
-        }, "nim.nimprettyMaxLineLen": {
+        },
+        "nim.nimPrettyMaxLineLen": {
           "type": "integer",
-          "default": 80,
-          "description": "Nimpretty: set the desired maximum line length (default: 80).",
+          "default": 100,
+          "description": "NimPretty: set the desired maximum line length (default: 100).",
           "scope": "resource"
         }
       }
     },
     "breakpoints": [
-      {"language": "nim"}
+      {
+        "language": "nim"
+      }
     ],
     "scripts": {
-      "vscode:prepublish": "npm run compile",
-      "compile": "tsc -p ./",
-      "watch": "tsc -watch -p ./"
-    },
-    "devDependencies": {
-      "@types/node": "^8.10.25",
-      "@types/vscode": "^1.51.0",
-      "tslint": "^5.16.0",
-      "typescript": "^3.4.5"
+      "vscode:prepublish": "nimble release"
     }
+  },
+  "devDependencies": {
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^8.10.25",
+    "@types/vscode": "^1.51.0",
+    "tslint": "^5.16.0",
+    "typescript": "^3.4.5",
+    "js-yaml": "^4.1.0",
+    "npm-check-updates": "^13.0.0",
+    "ovsx": "^0.2.1",
+    "vsce": "^1.95.0",
+    "vscode-test": "^1.4.0"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^8.1.0"
   }
 }

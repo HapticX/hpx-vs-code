@@ -1,70 +1,68 @@
 {
-    "comments": {
-        "lineComment": "#",
-        "blockComment": ["#[", "]#"]
+  "comments": {
+    "lineComment": "#",
+    "blockComment": ["#[", "]#"]
+  },
+  "brackets": [
+    ["{", "}"],
+    ["[", "]"],
+    ["(", ")"]
+  ],
+  "autoClosingPairs": [
+    ["{.", ".}"],
+    ["{", "}"],
+    ["##[", "]##"],
+    ["#[", "]#"],
+    ["[", "]"],
+    ["(", ")"],
+    ["\"\"\"", "\"\"\""],
+    ["\"", "\""],
+    ["'", "'"]
+  ],
+  "surroundingPairs": [
+    ["{.", ".}"],
+    ["{", "}"],
+    ["[", "]"],
+    ["(", ")"],
+    ["\"", "\""],
+    ["\"\"\"", "\"\"\""],
+    ["'", "'"]
+  ],
+  "folding": {
+    "markers": {
+      "start": "^\\s*//\\s*#?region\\b",
+      "end": "^\\s*//\\s*#?endregion\\b"
+    }
+  },
+  "onEnterRules": [
+    {
+      "beforeText": "^\\s*(?!#)(?:.*?):\\s*$",
+      "action": { "indent": "indent" }
+    }, {
+      "beforeText": "^\\s*(?:using|type|var|let|const)\\s*$",
+      "action": { "indent": "indent" }
+    }, {
+      "beforeText": "(?:[a-zA-Z_][a-zA-Z0-9_]*\\s*=\\s*(ptr|ref|var)?\\s*(enum|object).*?)\\s*$",
+      "action": { "indent": "indent" }
+    }, {
+      "beforeText": "^\\s*(?:serve|appRoutes|\"[^\"\n]+\"|get|put|link|delete|post|options|ws|wsConnect|wsClosed|wsError|wsMismatchProtocol).*?:\\s*$",
+      "action": { "indent": "indent" }
+    }, {
+      "beforeText": "^\\s*(?:proc|func|method|iterator|converter|template|macro).*?=\\s*$",
+      "action": { "indent": "indent" }
+    }, {
+      "beforeText": "^\\s*(\\b((return|raise|break|continue)\\b\\s*.*?|\\bdiscard\\b)\\s*",
+      "action": {"indent": "outdent"}
     },
-    "brackets": [
-        ["{", "}"],
-        ["[", "]"],
-        ["(", ")"]
-    ],
-    "autoClosingPairs": [
-        ["{.", ".}"],
-        ["{", "}"],
-        ["##[", "]##"],
-        ["#[", "]#"],
-        ["[", "]"],
-        ["(", ")"],
-        ["\"\"\"", "\"\"\""],
-        ["\"", "\""],
-        ["'", "'"]
-    ],
-    "surroundingPairs": [
-        ["{.", ".}"],
-        ["{", "}"],
-        ["[", "]"],
-        ["(", ")"],
-        ["\"", "\""],
-        ["\"\"\"", "\"\"\""],
-        ["'", "'"]
-    ],
-    "folding": {
-        "markers": {
-            "start": "^\\s*//\\s*#?region\\b",
-            "end": "^\\s*//\\s*#?endregion\\b"
-        }
-    },
-    "onEnterRules": [
-        {
-            "beforeText": "^\\s*(?!#)(?:.*?):\\s*$",
-            "action": { "indent": "indent" }
-        },
-        {
-            "beforeText": "^\\s*(?:using|type|var|let|const)\\s*$",
-            "action": { "indent": "indent" }
-        },
-        {
-            "beforeText": "(?:[a-zA-Z_][a-zA-Z0-9_]*\\s*=\\s*(ptr|ref|var)?\\s*(enum|object).*?)\\s*$",
-            "action": { "indent": "indent" }
-        },
-        {
-            "beforeText": "^\\s*(?:serve|appRoutes|\"[^\"\n]+\"|get|put|link|delete|post|options|ws|wsConnect|wsClosed|wsError|wsMismatchProtocol).*?:\\s*$",
-            "action": { "indent": "indent" }
-        },
-        {
-            "beforeText": "^\\s*(?:proc|func|method|iterator|converter|template|macro).*?=\\s*$",
-            "action": { "indent": "indent" }
-        },
-        {
-            "beforeText": "^(\\s+)[^\n]+\\n\\1",
-            "action": { "indent": "outdent" }
-        },
-        {
-            "beforeText": "^\\s*(?:##).*?\\s*$",
-            "action": {
-                "indent": "none",
-                "appendText": "## "
-            }
-        }
-    ]
+    {
+      "beforeText": "^(\\s+)[^\n]+\\n\\1",
+      "action": { "indent": "outdent" }
+    }, {
+      "beforeText": "^\\s*(?:##).*?\\s*$",
+      "action": {
+        "indent": "none",
+        "appendText": "## "
+      }
+    }
+  ]
 }

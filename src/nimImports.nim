@@ -66,11 +66,11 @@ proc createNimModule(projectDir, rootDir, dir, file: cstring): NimModuleInfo =
   nimModule
 
 
-proc walkDir(projectDir, rootDir, dir, singlePass: bool) =
+proc walkDir(projectDir: cstring, rootDir: cstring, dir: cstring, singlePass: bool) =
   fs.readdir(dir, proc(err: ErrnoException, files: seq[cstring]) =
     # if files.toJs().to(bool):
     for file in files:
-      var fullPath = path.join(dir, file)
+      var fullPath = path.join(file)
       if fs.statSync(fullPath).isDirectory():
         if not singlePass:
           walkDir(projectDir, rootDir, fullPath, false)

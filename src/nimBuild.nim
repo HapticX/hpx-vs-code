@@ -262,7 +262,7 @@ proc selectTerminal(): Future[cstring] {.async.} =
     }
   )
   var quickPick = await vscode.window.showQuickPick(items)
-  if quickPick.isNil():
+  return if quickPick.isNil():
     jsUndefined.to(cstring)
   else:
     quickPick.label

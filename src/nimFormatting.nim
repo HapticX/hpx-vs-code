@@ -53,7 +53,7 @@ proc provideDocumentFormattingEdits*(
       vscode.newPosition(1000000, 1000000))
     )
   ret.add(vscode.textEditReplace(`range`, content))
-  ret
+  return ret
 
 var nimFormattingProvider* {.exportc.} = block:
     var o = newJsObject()

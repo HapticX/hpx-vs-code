@@ -142,7 +142,6 @@ proc listCandidateProjects() =
 proc mapSeverityToVscodeSeverity(sev: cstring): VscodeDiagnosticSeverity =
   return case $(sev)
     of "Hint", "Warning": VscodeDiagnosticSeverity.warning
-    of "Error": VscodeDiagnosticSeverity.error
     else: VscodeDiagnosticSeverity.error
 
 
@@ -154,10 +153,7 @@ proc findErrorRange(msg: cstring, line, column: cint): VscodeRange =
     endColumn += msg.findLast("'") - msg.find("'") - 1
 
   vscode.newRange(
-    line,
-    max(0, column - 1),
-    line,
-    max(0, endColumn - 1)
+    line, max(0, column - 1), line, max(0, endColumn - 1)
   )
 
 
@@ -279,22 +275,14 @@ proc runFile() =
         editor.document.save().then(proc(success: bool): void =
           if not (terminal.isNil() or editor.isNil()) and success:
             terminal.sendText(
-                nimBuildCmdStr &
-                outputParams &
-                " -r \"" &
-                editor.document.fileName &
-                "\"",
-                true
+              fmt"{nimBuildCmdStr}{outputParams} -r " & "\"" & editor.document.fileName & "\"",
+              true
             )
         )
       else:
         terminal.sendText(
-            nimBuildCmdStr &
-            outputParams &
-            " -r \"" &
-            editor.document.fileName &
-            "\"",
-            true
+          fmt"{nimBuildCmdStr}{outputParams} -r " & "\"" & editor.document.fileName & "\"",
+          true
         )
 
 
@@ -354,66 +342,7 @@ proc activate*(ctx: VscodeExtensionContext) =
   diagnosticCollection = vscode.languages.createDiagnosticCollection("nim")
   ctx.subscriptions.add(diagnosticCollection)
 
-  var languageConfig = VscodeLanguageConfiguration{
-    # @Note Literal whitespace in below regexps is removed
-    onEnterRules: newArrayWith[VscodeOnEnterRule](
-      VscodeOnEnterRule{
-        beforeText: newRegExp(r"^(\s)*## ", ""),
-        action: VscodeEnterAction{
-          indentAction: VscodeIndentAction.none,
-          appendText: "## "
-        }
-      },
-      VscodeOnEnterRule{
-        beforeText: newRegExp("""
-          ^\s*
-          ( (case) \b .* : )
-          \s*$
-          """.replace(newRegExp(r"\s+?", r"g"), ""), ""),
-        action: VscodeEnterAction{ indentAction: VscodeIndentAction.none }
-      },
-      VscodeOnEnterRule{
-        beforeText: newRegExp("""
-          ^\s*
-          (
-            ((proc|macro|iterator|template|converter|func) \b .*=) |
-            ((import|export|let|var|const|type) \b) |
-            ([^:]+:)
-          )
-          \s*$
-          """.replace(newRegExp(r"\s+?", r"g"), ""), ""),
-        action: VscodeEnterAction{ indentAction: VscodeIndentAction.indent }
-      },
-      VscodeOnEnterRule{
-        beforeText: newRegExp("""
-          ^\s*
-          (
-            ((return|raise|break|continue) \b .*) |
-            ((discard) \b)
-          )
-          \s*
-          """.replace(newRegExp(r"\s+?", r"g"), ""), ""),
-        action: VscodeEnterAction{ indentAction: VscodeIndentAction.outdent }
-      }
-    ),
-    wordPattern: newRegExp(
-      r"(-?\d*\.\d\w*)|([^\`\~\!\@\#\%\^\&\*\(\)\-\=\+\[\{\]\}\\\|\;\:\'\""\,\.\<\>\/\?\s]+)",
-      r"g"
-    )
-  }
-  try:
-    vscode.languages.setLanguageConfiguration(
-      mode.language,
-      languageConfig
-    )
-  except:
-    console.error("language configuration failed to set",
-      getCurrentException(),
-      getCurrentExceptionMsg().cstring
-    )
-
-  vscode.window.onDidChangeActiveTextEditor(showHideStatus, nil,
-    ctx.subscriptions)
+  vscode.window.onDidChangeActiveTextEditor(showHideStatus, nil, ctx.subscriptions)
 
   vscode.window.onDidCloseTerminal(proc(e: VscodeTerminal) =
     if terminal.toJs().to(bool) and e.processId == terminal.processId:
