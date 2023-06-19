@@ -1,8 +1,10 @@
 ## map between vscode and nimsuggest for providing a list of places a symbol
 ## is referenced.
 
-import platform/vscodeApi
-import nimSuggestExec
+import
+  platform/vscodeApi,
+  nimSuggestExec
+
 
 proc provideReferences*(
   doc: VscodeTextDocument,

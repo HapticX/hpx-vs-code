@@ -1,13 +1,15 @@
 # modules handles the concept of nim projects. Projects are the project file
 # we pass to the compiler, nimsuggest, etc... 
 
+import
+  std/[jsconsole, jsffi],
+  platform/js/[jsPromise, jsString, jsNode, jsre]
+
 from platform/vscodeApi import VscodeWorkspaceFolder,
   VscodeWorkspaceConfiguration, vscode, getWorkspaceFolder, uriFile,
   asRelativePath, findFiles, get, newWorkspaceFolderLike, VscodeUri,
   VscodeUriChange, with, getConfiguration, VscodeConfigurationChangeEvent,
   affectsConfiguration
-import std/[jsconsole, jsffi]
-import platform/js/[jsPromise, jsString, jsNode, jsre]
 from platform/js/jsNodePath import path, isAbsolute, parse, ParsedPath, dirname
 
 type
@@ -90,7 +92,8 @@ proc getProjectFileInfo*(filename: cstring): ProjectFileInfo =
       return project
   return projects[0]
 
-proc processConfigProjects(conf: JsObject): void =
+
+proc processConfigProjects(conf: JsObject) =
   ## updates `projects` from config `nim.projects`, if `nim.projects` changed
   ## ensure that process `processConfigProjectMapping` is called thereafter
   projects.setLen(0)
@@ -107,7 +110,8 @@ proc processConfigProjects(conf: JsObject): void =
         ).catch(proc(reason: JsObject) =
           console.error("nimProjects - processConfigProjects Failed", reason))
 
-proc processConfigProjectMapping(conf: JsObject): void =
+
+proc processConfigProjectMapping(conf: JsObject) =
   ## updates `projectMapping` from config `nim.projectMapping`, if
   ## `nim.projects` changed ensure that `procesConfigProjects` is called first
   
@@ -120,7 +124,8 @@ proc processConfigProjectMapping(conf: JsObject): void =
         fileRegex: newRegExp(k.toJs().to(cstring), ""), projectPath: path
       })
 
-proc processConfig*(conf: VscodeWorkspaceConfiguration): void =
+
+proc processConfig*(conf: VscodeWorkspaceConfiguration) =
   ## to be called whenever the config updates and on initial startup
   
   var
@@ -130,7 +135,8 @@ proc processConfig*(conf: VscodeWorkspaceConfiguration): void =
   processConfigProjects(cfgProjects)
   processConfigProjectMapping(cfgMappings)
 
-proc configUpdate*(cfgChg: VscodeConfigurationChangeEvent): void =
+
+proc configUpdate*(cfgChg: VscodeConfigurationChangeEvent) =
   let
     projectsChanged = cfgChg.affectsConfiguration("nim.project")
     mappingsChanged = cfgChg.affectsConfiguration("nim.projectMapping")

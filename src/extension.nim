@@ -3,16 +3,11 @@
 when not defined(js):
   {.error: "This module only works on the JavaScript platform".}
 
-import platform/vscodeApi
-import platform/js/[jsre, jsString, jsNodeFs, jsNodePath]
-
-import std/jsconsole
-from std/strformat import fmt
-from std/os import `/`
-
-from spec import ExtensionState
-
-import nimRename,
+import
+  platform/vscodeApi,
+  platform/js/[jsre, jsString, jsNodeFs, jsNodePath],
+  std/jsconsole,
+  nimRename,
   nimSuggest,
   nimDeclaration,
   nimReferences,
@@ -21,6 +16,9 @@ import nimRename,
   nimHover,
   nimFormatting
 
+from std/strformat import fmt
+from std/os import `/`
+from spec import ExtensionState
 from nimBuild import check,
   execSelectionInTerminal,
   activateEvalConsole,
@@ -35,10 +33,11 @@ from nimProjects import processConfig, configUpdate
 from nimMode import mode
 from nimLsp import startLanguageServer
 
-var state: ExtensionState
-var diagnosticCollection {.threadvar.}: VscodeDiagnosticCollection
-var fileWatcher {.threadvar.}: VscodeFileSystemWatcher
-var terminal {.threadvar.}: VscodeTerminal
+var
+  state: ExtensionState
+  diagnosticCollection {.threadvar.}: VscodeDiagnosticCollection
+  fileWatcher {.threadvar.}: VscodeFileSystemWatcher
+  terminal {.threadvar.}: VscodeTerminal
 
 type
   # FileExtensions* {.pure, size: sizeof(cint).} = enum
@@ -67,6 +66,7 @@ let defaultIndexExcludeGlobs =
     res[cstring "nimcache"/"**"] = true
     res
   ## exclude these by default as most people will not want them indexed
+
 
 proc listCandidateProjects() =
   ## Find all the "projects" in the workspace and folders
@@ -115,7 +115,8 @@ proc listCandidateProjects() =
         of symbolicLink, symlinkDir, unknown:
           continue #skip symlinks & unknowns
         else:
-          var kind = if i.name.endsWith(".nimble"): nimble
+          var kind =
+            if i.name.endsWith(".nimble"): nimble
             elif i.name.endsWith(".nim.cfg"): prjNimCfg
             elif i.name.endsWith("nim.cfg"): cfg
             elif i.name.endsWith("config.nims"): configNims
@@ -137,19 +138,20 @@ proc listCandidateProjects() =
     ).catch do(r: JsObject):
       console.error(r)
 
+
 proc mapSeverityToVscodeSeverity(sev: cstring): VscodeDiagnosticSeverity =
   return case $(sev)
     of "Hint", "Warning": VscodeDiagnosticSeverity.warning
     of "Error": VscodeDiagnosticSeverity.error
     else: VscodeDiagnosticSeverity.error
 
+
 proc findErrorRange(msg: cstring, line, column: cint): VscodeRange =
   var endColumn = column
+  let line = max(0, line - 1)
   if msg.contains("'"):
     # -1 because findLast includes the index of the quote
     endColumn += msg.findLast("'") - msg.find("'") - 1
-
-  let line = max(0, line - 1)
 
   vscode.newRange(
     line,
@@ -158,9 +160,11 @@ proc findErrorRange(msg: cstring, line, column: cint): VscodeRange =
     max(0, endColumn - 1)
   )
 
-proc runCheck(doc: VscodeTextDocument = nil): void =
-  var config = vscode.workspace.getConfiguration("nim")
-  var document = doc
+
+proc runCheck(doc: VscodeTextDocument = nil) =
+  var
+    config = vscode.workspace.getConfiguration("nim")
+    document = doc
   if document.isNil() and not vscode.window.activeTextEditor.isNil():
     document = vscode.window.activeTextEditor.document
 
@@ -180,8 +184,9 @@ proc runCheck(doc: VscodeTextDocument = nil): void =
   ).then(proc(errors: seq[CheckResult]) =
     diagnosticCollection.clear()
 
-    var diagnosticMap = newMap[cstring, Array[VscodeDiagnostic]]()
-    var err = newMap[cstring, bool]()
+    var
+      diagnosticMap = newMap[cstring, Array[VscodeDiagnostic]]()
+      err = newMap[cstring, bool]()
     for error in errors:
       var errorId = error.file & cstring($error.line) & cstring($error.column) & error.msg
       if not err[errorId]:
@@ -214,6 +219,7 @@ proc runCheck(doc: VscodeTextDocument = nil): void =
   ).catch(proc(reason: JsObject) =
     console.error("HappyX - runCheck Failed", reason))
 
+
 proc startBuildOnSaveWatcher(subscriptions: Array[VscodeDisposable]) =
   vscode.workspace.onDidSaveTextDocument(
     proc(document: VscodeTextDocument) =
@@ -231,7 +237,8 @@ proc startBuildOnSaveWatcher(subscriptions: Array[VscodeDisposable]) =
     subscriptions
   )
 
-proc runFile(): void =
+
+proc runFile() =
   var
     editor = vscode.window.activeTextEditor
     nimCfg = vscode.workspace.getConfiguration("nim")
@@ -290,12 +297,14 @@ proc runFile(): void =
             true
         )
 
-proc clearCachesCmd(): void =
+
+proc clearCachesCmd() =
   ## setup a command to clear file and type caches in case they're out of date
   let config = vscode.workspace.getConfiguration("files")
   discard clearCaches(config.getStrBoolMap("watcherExclude", defaultIndexExcludeGlobs))
 
-proc activate*(ctx: VscodeExtensionContext): void =
+
+proc activate*(ctx: VscodeExtensionContext) =
   var config = vscode.workspace.getConfiguration("nim")
   state = ExtensionState(
     ctx: ctx,
@@ -466,10 +475,12 @@ proc activate*(ctx: VscodeExtensionContext): void =
   discard initImports()
   outputLine("[info] Extension Activated")
 
+
 proc deactivate*(): void =
   discard onClose()
   discard closeAllNimSuggestProcesses()
   fileWatcher.dispose()
+
 
 var module {.importc.}: JsObject
 module.exports.activate = activate

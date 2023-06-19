@@ -1,7 +1,9 @@
 ## maps nimsuggest to vscode definition provider, this allows goto definition
 
-import platform/vscodeApi
-import nimSuggestExec
+import
+  platform/vscodeApi,
+  nimSuggestExec
+
 
 proc provideDefinition*(
   doc: VscodeTextDocument,
@@ -36,6 +38,7 @@ proc provideDefinition*(
         resolve(jsNull.to(Array[VscodeLocation]))
     ).catch(proc(reason: JsObject) = reject(reason))
   )
+
 
 var nimDefinitionProvider* {.exportc.} = block:
   var o = newJsObject()

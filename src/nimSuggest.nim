@@ -1,11 +1,13 @@
 ## Maps between vscode completion provider api and nimsuggest, auto-complete
 ## suggestions go brr.
 
-import platform/vscodeApi
-import platform/js/[jsString, jsre]
-import std/jsconsole
+import
+  platform/vscodeApi,
+  platform/js/[jsString, jsre],
+  std/jsconsole,
+  nimSuggestExec,
+  nimImports
 
-import nimSuggestExec, nimImports
 from nimProjects import getProjectFileInfo
 
 proc vscodeKindFromNimSym(kind: cstring): VscodeCompletionKind =

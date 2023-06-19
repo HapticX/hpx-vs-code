@@ -1,9 +1,11 @@
 ## maps nimsuggest to vscode hover providing, which in turn shows hovers or
 ## tooltips, with the signature or docs for various symbols
 
-import platform/vscodeApi
-import nimSuggestExec
-import nimMode
+import
+  platform/vscodeApi,
+  nimSuggestExec,
+  nimMode
+
 
 proc provideHover*(
   doc: VscodeTextDocument,
@@ -24,8 +26,9 @@ proc provideHover*(
       doc.getText()
     ).then(proc(items: seq[NimSuggestResult]) =
       if(not items.isNull() and not items.isUndefined() and items.len > 0):
-        var definition = items[items.len - 1]
-        var label = definition.fullName
+        var
+          definition = items[items.len - 1]
+          label = definition.fullName
 
         if definition.`type` != "":
           label &= ": " & definition.`type`
@@ -42,6 +45,6 @@ proc provideHover*(
   )
 
 var nimHoverProvider* {.exportc.} = block:
-    var o = newJsObject()
-    o.provideHover = provideHover
-    o.to(VscodeHoverProvider)
+  var o = newJsObject()
+  o.provideHover = provideHover
+  o.to(VscodeHoverProvider)
