@@ -58,6 +58,13 @@
       "beforeText": "^(\\s+)[^\n]+\\n\\1",
       "action": { "indent": "outdent" }
     }, {
+      "beforeText": "^\\s*(?:##)(\\s*)\\d+\\..*?\\s*$",
+      "action": {
+        "indent": "none",
+        "appendText": "##\\2${1:1}"
+      },
+      "in": ["commentSingleLineDoc"]
+    }, {
       "beforeText": "^\\s*(?:##).*?\\s*$",
       "action": {
         "indent": "none",

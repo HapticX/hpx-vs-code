@@ -51,14 +51,44 @@
 		"stringBlocks": {
 			"patterns": [
 				{"include": "#asmCode"},
-				{"include": "#strings"},
-				{"include": "#regexString"}
+				{"include": "#regexString"},
+				{"include": "#strings"}
 			]
 		},
 		"regexString": {
 			"name": "string.regex.nim",
-			"begin": "(?<=re)\"",
-			"end": "\""
+			"begin": "(?<=(re|r))\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "keyword.control.nim",
+					"match": "\\[\\[:(alnum|alpha|ascii|blank|cntrl|digit|graph|lower|print|punct|space|upper|word|xdigit|>|<):\\]\\]"
+				}, {
+					"name": "entity.name.function.nim",
+					"match": "\\[^[^\\]]+\\]"
+				}, {
+					"name": "entity.name.class.nim",
+					"match": "\\[[^\\]]+\\]"
+				}, {
+					"name": "keyword.control.nim",
+					"match": "(\\\\)+[0nrtkgx]"
+				}, {
+					"name": "keyword.control.nim",
+					"match": "[\\^\\$\\G\\Z\\A\\z\\a\\b\\B\\*\\+]"
+				}, {
+					"name": "markup.changed.nim",
+					"match": "(\\\\)+\\S"
+				}, {
+					"name": "markup.italic.nim",
+					"match": "\\|"
+				}, {
+					"name": "markup.inserted.nim",
+					"match": "\\{[^\\}]+\\}"
+				}, {
+					"name": "markup.heading.nim",
+					"match": "(?<=\\()(\\?!|\\?\\<\\=|\\?\\=|\\?|\\?\\<\\!|\\?\\:|\\?\\>|\\?#|\\?\\||\\?\\&)"
+				}
+			]
 		},
 		"strings": {
 			"name": "string.quoted.double.nim",
@@ -136,7 +166,32 @@
 			"begin": "##(?!\\[)",
 			"end": "$(?=\\s*)",
 			"patterns": [
-				{"include": "text.html.markdown"}
+				{
+					"name": "markup.heading.nim",
+					"match": "#+ +[\\S \t]+"
+				}, {
+					"name": "markup.inline.raw.nim",
+					"match": "`[\\S \t+]`"
+				}, {
+					"name": "markup.raw.nim",
+					"begin": "```",
+					"end": "```"
+				}, {
+					"name": "markup.bold.nim",
+					"match": "(\\*\\*[\\S \t]*\\*\\*|__[\\S \t]__)"
+				}, {
+					"name": "markup.italic.nim",
+					"match": "(\\*[\\S \t]*\\*|_[\\S \t]_)"
+				}, {
+					"name": "markup.quote.nim",
+					"match": ">+ +[\\S \t]+"
+				}, {
+					"name": "markup.changed.nim",
+					"match": "\\d+\\. +[\\S \t]+"
+				}, {
+					"name": "markup.changed.nim",
+					"match": "[\\-\\*\\+] +[\\S \t]+"
+				}
 			]
 		},
 		"commentMultilineDoc": {

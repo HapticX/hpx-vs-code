@@ -26,29 +26,3 @@ task main, "This compiles the vscode Nim extension":
 
 task release, "This compiles a release version":
   exec "nim js -d:release -d:danger --opt:size --outdir:out --checks:off --sourceMap src"/"extension.nim"
-
-task vsix, "Build VSIX package":
-  initialNpmInstall()
-  exec "npm exec -c 'vsce package --out out"/"extension-" & version & ".vsix'"
-
-task install_vsix, "Install the VSIX package":
-  initialNpmInstall()
-  exec "code --install-extension out"/"extension-" & version & ".vsix"
-
-# Tasks for maintenance
-task audit_node_deps, "Audit Node.js dependencies":
-  initialNpmInstall()
-  exec "npm audit"
-  echo "NOTE: 'engines' versions in 'package.json' need manually audited"
-
-task upgrade_node_deps, "Upgrade Node.js dependencies":
-  initialNpmInstall()
-  exec "npm exec -c 'ncu -ui'"
-  exec "npm install"
-  echo "NOTE: 'engines' versions in 'package.json' need manually upgraded"
-
-# Tasks for publishing the extension
-task extReleasePatch, "Patch release on vscode marketplace and openvsx registry":
-  initialNpmInstall()
-  exec "npm exec -c 'vsce publish patch'" # this bumps the version number
-  exec "npm exec -c 'ovsx publish out"/"extension-" & version & ".vsix'"

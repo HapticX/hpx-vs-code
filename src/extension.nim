@@ -310,6 +310,37 @@ proc activate*(ctx: VscodeExtensionContext) =
   vscode.commands.registerCommand("nim.execSelectionInTerminal", execSelectionInTerminal)
   vscode.commands.registerCommand("nim.clearCaches", clearCachesCmd)
   vscode.commands.registerCommand("nim.listCandidateProjects", listCandidateProjects)
+  
+  var languageConfig = VscodeLanguageConfiguration{
+    # @Note Literal whitespace in below regexps is removed
+    onEnterRules: newArrayWith[VscodeOnEnterRule](
+      VscodeOnEnterRule{
+        beforeText: newRegExp("""
+          ^\s*
+          (
+            ((return|raise|break|continue) \b .*) |
+            ((discard) \b)
+          )
+          \s*
+          """.replace(newRegExp(r"\s+?", r"g"), ""), ""),
+        action: VscodeEnterAction{ indentAction: VscodeIndentAction.outdent }
+      }
+    ),
+    wordPattern: newRegExp(
+      r"(-?\d*\.\d\w*)|([^\`\~\!\@\#\%\^\&\*\(\)\-\=\+\[\{\]\}\\\|\;\:\'\""\,\.\<\>\/\?\s]+)",
+      r"g"
+    )
+  }
+  try:
+    vscode.languages.setLanguageConfiguration(
+      mode.language,
+      languageConfig
+    )
+  except:
+    console.error("language configuration failed to set",
+      getCurrentException(),
+      getCurrentExceptionMsg().cstring
+    )
 
   processConfig(config)
   discard vscode.workspace.onDidChangeConfiguration(configUpdate)
