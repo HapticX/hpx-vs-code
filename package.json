@@ -2,7 +2,7 @@
   "name": "happyx",
   "displayName": "HappyX",
   "description": "HappyX web framework for Visual Studio Code",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "publisher": "HapticX",
   "license": "MIT",
   "icon": "logo.png",
