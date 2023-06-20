@@ -7,8 +7,8 @@
 		{"include": "#comments"},
 		{"include": "#keywords"},
 		{"include": "#pragmas"},
-		{"include": "#stringBlocks"},
 		{"include": "#functions"},
+		{"include": "#stringBlocks"},
 		{"include": "#operators"}
 	],
 	"repository": {
@@ -52,12 +52,17 @@
 			"patterns": [
 				{"include": "#asmCode"},
 				{"include": "#regexString"},
-				{"include": "#strings"}
+				{"include": "#fmtString"},
+				{"include": "#strings"},
+				{
+					"name": "string.quoted.double.nim",
+					"match": "'\\S'"
+				}
 			]
 		},
 		"regexString": {
-			"name": "string.regex.nim",
-			"begin": "(?<=(re|r))\"",
+			"name": "string.quoted.double.nim",
+			"begin": "(?<=(re|r|newRegExp|regExp)(\\s*\\(\\s*)?)\"",
 			"end": "\"",
 			"patterns": [
 				{
@@ -87,6 +92,25 @@
 				}, {
 					"name": "markup.heading.nim",
 					"match": "(?<=\\()(\\?!|\\?\\<\\=|\\?\\=|\\?|\\?\\<\\!|\\?\\:|\\?\\>|\\?#|\\?\\||\\?\\&)"
+				}, {
+					"name": "constant.character.escape.nim",
+					"match": "\\\\."
+				}
+			]
+		},
+		"fmtString": {
+			"name": "string.quoted.double.nim",
+			"begin": "(?<=fmt)\\s*(\\(\\s*)?\"+?",
+			"end": "\"+",
+			"patterns": [
+				{
+					"name": "constant.nim",
+					"begin": "\\{",
+					"end": "\\}",
+					"patterns": [{"include": "source.nim"}]
+				}, {
+					"name": "constant.character.escape.nim",
+					"match": "\\\\."
 				}
 			]
 		},
@@ -130,6 +154,9 @@
 				}, {
 					"name": "entity.name.function.nim",
 					"match": "\\[[a-zA-Z][a-zA-Z0-9_]*:[a-zA-Z][a-zA-Z0-9_]*\\]"
+				}, {
+					"name": "constant.character.escape.nim",
+					"match": "\\\\."
 				}
 			]
 		},
@@ -148,7 +175,7 @@
 					"match": "\\b[A-Z][A-Za-z0-9_]*\\b"
 				}, {
 					"name": "entity.name.function.nim",
-					"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\("
+					"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=\\()"
 				}, {
 					"name": "entity.name.function.nim",
 					"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s+(?=[\\w\\d]+)"
@@ -164,7 +191,7 @@
 		"commentSingleLineDoc": {
 			"name": "comment.block.documentation.nim",
 			"begin": "##(?!\\[)",
-			"end": "$(?=\\s*)",
+			"end": "$",
 			"patterns": [
 				{
 					"name": "markup.heading.nim",

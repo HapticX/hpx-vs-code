@@ -21,6 +21,9 @@ Official VS Code plugin for use HappyX
 - `Some features`
   More syntax highlight here!
   ![ASM](https://github.com/HapticX/hpx-vs-code/blob/master/images/codegenDecl.png)
+  ![fmt](https://github.com/HapticX/hpx-vs-code/blob/master/images/fmt.png)
+  ![markdown comments](https://github.com/HapticX/hpx-vs-code/blob/master/images/markdown_comments.png)
+  ![Regex](https://github.com/HapticX/hpx-vs-code/blob/master/images/regex.png)
 - `Code snippets`
   HappyX provides code snippets for `components`, `mounts`, `request models` and other constructions
 

@@ -325,10 +325,6 @@ proc activate*(ctx: VscodeExtensionContext) =
           """.replace(newRegExp(r"\s+?", r"g"), ""), ""),
         action: VscodeEnterAction{ indentAction: VscodeIndentAction.outdent }
       }
-    ),
-    wordPattern: newRegExp(
-      r"(-?\d*\.\d\w*)|([^\`\~\!\@\#\%\^\&\*\(\)\-\=\+\[\{\]\}\\\|\;\:\'\""\,\.\<\>\/\?\s]+)",
-      r"g"
     )
   }
   try:
