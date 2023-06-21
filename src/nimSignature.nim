@@ -11,7 +11,8 @@ proc provideSignatureHelp(
   position: VscodePosition,
   token: VscodeCancellationToken
 ): Promise[VscodeSignatureHelp] =
-  return newPromise(proc(
+  return newPromise(
+  proc(
     resolve: proc(val: VscodeSignatureHelp),
     reject: proc(reason: JsObject)
   ) =

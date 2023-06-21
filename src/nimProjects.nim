@@ -25,9 +25,8 @@ var
   projects = newArray[ProjectFileInfo]()
   projectMapping = newArray[ProjectMappingInfo]()
 
-proc getProjects*(): Array[ProjectFileInfo] = projects
-
-proc isProjectMode*(): bool = projects.len > 0
+template getProjects*(): Array[ProjectFileInfo] = projects
+template isProjectMode*(): bool = projects.len > 0
 
 proc toProjectInfo(filePath: cstring): ProjectFileInfo =
   var workspace = vscode.workspace

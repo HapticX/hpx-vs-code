@@ -50,14 +50,14 @@
 		},
 		"stringBlocks": {
 			"patterns": [
+				{
+					"name": "string.quoted.double.nim",
+					"match": "'.'"
+				},
 				{"include": "#asmCode"},
 				{"include": "#regexString"},
 				{"include": "#fmtString"},
-				{"include": "#strings"},
-				{
-					"name": "string.quoted.double.nim",
-					"match": "'\\S'"
-				}
+				{"include": "#strings"}
 			]
 		},
 		"regexString": {
@@ -76,13 +76,13 @@
 					"match": "\\[[^\\]]+\\]"
 				}, {
 					"name": "keyword.control.nim",
-					"match": "(\\\\)+[0nrtkgx]"
+					"match": "(\\\\)+?[0nrtkgx]"
 				}, {
 					"name": "keyword.control.nim",
 					"match": "[\\^\\$\\G\\Z\\A\\z\\a\\b\\B\\*\\+]"
 				}, {
 					"name": "markup.changed.nim",
-					"match": "(\\\\)+\\S"
+					"match": "(\\\\)+?\\S"
 				}, {
 					"name": "markup.italic.nim",
 					"match": "\\|"
