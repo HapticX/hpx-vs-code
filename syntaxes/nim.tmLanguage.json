@@ -76,7 +76,7 @@
 					"match": "\\[[^\\]]+\\]"
 				}, {
 					"name": "keyword.control.nim",
-					"match": "(\\\\\\\\.|\\\\.)"
+					"match": "(\\\\\\\\[^\"]|\\\\[^\"])"
 				}, {
 					"name": "markup.italic.nim",
 					"match": "\\|"
@@ -94,8 +94,8 @@
 		},
 		"fmtString": {
 			"name": "string.quoted.double.nim",
-			"begin": "(?<=fmt)\\s*(\\(\\s*)?\"+?",
-			"end": "\"+",
+			"begin": "(?<=fmt)\\s*(\\(\\s*)?(\"\"\"|\")",
+			"end": "(\"\"\"|\")",
 			"patterns": [
 				{
 					"name": "constant.nim",

@@ -24,8 +24,8 @@ proc showHideStatus*() =
   statusBarEntry.hide()
 
 
-proc hideNimStatus*() = statusBarEntry.dispose()
-proc hideNimProgress*() = progressBarEntry.dispose()
+template hideNimStatus*() = statusBarEntry.dispose()
+template hideNimProgress*() = progressBarEntry.dispose()
 
 
 proc showNimStatus*(msg, cmd, tooltip: cstring) =

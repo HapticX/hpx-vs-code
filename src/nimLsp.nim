@@ -1,7 +1,7 @@
-import std/jsconsole
-import platform/[vscodeApi, languageClientApi]
-
-import platform/js/[jsNodeFs, jsNodePath, jsNodeCp]
+import
+  std/jsconsole,
+  platform/[vscodeApi, languageClientApi],
+  platform/js/[jsNodeFs, jsNodePath, jsNodeCp]
 
 from std/strformat import fmt
 from tools/nimBinTools import getNimbleExecPath, getBinPath
