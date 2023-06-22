@@ -70,19 +70,13 @@
 					"match": "\\[\\[:(alnum|alpha|ascii|blank|cntrl|digit|graph|lower|print|punct|space|upper|word|xdigit|>|<):\\]\\]"
 				}, {
 					"name": "entity.name.function.nim",
-					"match": "\\[^[^\\]]+\\]"
+					"match": "\\[\\^[^\\]]+\\]"
 				}, {
 					"name": "entity.name.class.nim",
 					"match": "\\[[^\\]]+\\]"
 				}, {
 					"name": "keyword.control.nim",
-					"match": "(\\\\)+?[0nrtkgx]"
-				}, {
-					"name": "keyword.control.nim",
-					"match": "[\\^\\$\\G\\Z\\A\\z\\a\\b\\B\\*\\+]"
-				}, {
-					"name": "markup.changed.nim",
-					"match": "(\\\\)+?\\S"
+					"match": "(\\\\\\\\.|\\\\.)"
 				}, {
 					"name": "markup.italic.nim",
 					"match": "\\|"

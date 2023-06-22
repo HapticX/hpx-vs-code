@@ -20,6 +20,9 @@
           "name": "keyword.control.nimble",
           "match": "\\b(exec|echo|task|taskRequires|before|when|import|if|elif|else)\\b"
         }, {
+          "name": "keyword.control.nimble",
+          "match": "\\b(case|of|proc|func|iterator|method|template|converter|macro|type|from|as|for|while)\\b"
+        }, {
           "name": "markup.heading.nimble",
           "match": "(?<=(task|before)\\s*)[a-zA-Z][a-zA-Z0-9_]*"
         }, {
@@ -49,7 +52,7 @@
 			"end": "\"",
 			"patterns": [
 				{
-					"name": "constant.character.escape.happyx",
+					"name": "constant.character.escape.nimble",
 					"match": "\\\\."
 				}
 			]
