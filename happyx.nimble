@@ -1,6 +1,6 @@
 # Package
 
-version     = "3.4.0"
+version     = "3.4.1"
 author      = "HapticX"
 description = "HappyX"
 license     = "MIT"
@@ -22,7 +22,7 @@ proc initialNpmInstall =
 
 # Tasks
 task main, "This compiles the vscode Nim extension":
-  exec "nim js --outdir:out --checks:on --sourceMap src" / "extension.nim"
+  exec "nim js --outdir:out --sourceMap src" / "extension.nim"
 
 task release, "This compiles a release version":
-  exec "nim js -d:release -d:danger --opt:size --outdir:out --checks:off --sourceMap src" / "extension.nim"
+  exec "nim js -d:release --opt:size --outdir:out -a:off -x:off -w:off --hints:off --sourceMap src" / "extension.nim"
