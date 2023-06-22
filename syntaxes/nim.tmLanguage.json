@@ -22,10 +22,13 @@
 					"match": "\\bnew\\b(?=[ \t]+[\\S])"
 				}, {
 					"name": "keyword.types.nim",
-					"match": "\\b(object|enum|untyped|typed|string|char|auto|any|tuple|seq|set|ref|ptr|pointer|sink|array|open[aA]rray|int\\d{0,2}|float\\d{0,2}|uint\\d{0,2})\\b"
+					"match": "\\b(object|enum|untyped|typed|string|char|auto|any|tuple|seq|set|ref|ptr|pointer|sink|array|open[aA]rray|int\\d{0,2}|float\\d{0,2}|uint\\d{0,2}|byte|cstring|cstring[aA]rray|cchar|cint|clong|clongdouble|clonglong)\\b"
+				}, {
+					"name": "keyword.types.nim",
+					"match": "\\b(void|range|countdown|countup|owned|cfloat|cschar|cshort|csize_t|cuint|cdouble|culong|culonglong|cushort|typedesc)\\b"
 				}, {
 					"name": "keyword.builtin.nim",
-					"match": "\\b(echo|defined|declared|declaredInScope|shl|shr|div|mod|xor|notin|in|out|await|waitFor|asyncCheck)\\b"
+					"match": "\\b(echo|assert|do[aA]ssert|defined|declared|declaredInScope|shl|shr|div|mod|xor|notin|in|out|await|waitFor|asyncCheck)\\b"
 				}, {
 					"name": "keyword.macros.nim",
 					"match": "\\b(model|serve|appRoutes|component|mount|regCORS|pathParams|remember)\\b"
