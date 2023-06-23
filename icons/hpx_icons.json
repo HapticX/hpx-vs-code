@@ -5,11 +5,18 @@
     },
     "nimja_template": {
       "iconPath": "./nimja.svg"
+    },
+    "nim_config": {
+      "iconPath": "./settings.svg"
     }
   },
   "fileExtensions": {
     "nim": "nim_lang",
     "nimble": "nim_lang",
-    "nimja": "nimja_template"
+    "nimja": "nimja_template",
+    "nim.cfg": "nim_config"
+  },
+  "fileNames": {
+    "nim.cfg": "nim_config"
   }
 }

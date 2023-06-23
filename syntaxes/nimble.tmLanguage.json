@@ -3,8 +3,8 @@
 	"name": "Nimble",
 	"scopeName": "source.nimble",
   "patterns": [
-    {"include": "#keywords"},
     {"include": "#strings"},
+    {"include": "#keywords"},
     {"include": "#comments"}
   ],
 	"repository": {
@@ -13,6 +13,9 @@
         {
           "name": "markup.bold.nimble",
           "match": "\\b(name|version|author|description|license|requires)\\b"
+        }, {
+          "name": "keyword.control.nimble",
+          "match": "(?<=:\\s*).*?$"
         }, {
           "name": "markup.changed.nimble",
           "match": "\\b(skipDirs|skipFiles|installDirs|installFiles|installExt|bin|namedBin|srcDir|binDir|backend)\\b"
