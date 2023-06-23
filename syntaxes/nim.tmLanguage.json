@@ -28,7 +28,7 @@
 					"match": "\\b(void|range|countdown|countup|owned|cfloat|cschar|cshort|csize_t|cuint|cdouble|culong|culonglong|cushort|typedesc)\\b"
 				}, {
 					"name": "keyword.builtin.nim",
-					"match": "\\b(echo|assert|do[aA]ssert|defined|declared|declaredInScope|shl|shr|div|mod|xor|notin|in|out|await|waitFor|asyncCheck)\\b"
+					"match": "\\b(echo|assert|do[aA]ssert|defined|declared|declaredInScope|shl|shr|div|mod|or|and|xor|notin|in|out|await|waitFor|asyncCheck)\\b"
 				}, {
 					"name": "keyword.macros.nim",
 					"match": "\\b(model|serve|appRoutes|component|mount|regCORS|pathParams|remember)\\b"
