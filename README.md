@@ -30,3 +30,8 @@ Official VS Code plugin for use HappyX
 
 ![Preview](images/preview.gif)
 
+
+## Have A Nice Idea / Found A Bug? ✨
+
+[Open issue!](https://github.com/HapticX/hpx-vs-code/issues/new)
+
