@@ -175,7 +175,7 @@
 					"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=\\()"
 				}, {
 					"name": "entity.name.function.nim",
-					"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s+(?=[\\w\\d]+)"
+					"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s+(?=[\\w\\d]+)(?!(and|or|as|in|notin|xor|shr|shl))"
 				}, {
 					"name": "entity.name.function.nim",
 					"match": "(?<=\\([\\s+\\S]+?\\))\\s*\\b([a-zA-Z_][a-zA-Z0-9_]*)"
