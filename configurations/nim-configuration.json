@@ -39,7 +39,7 @@
       "beforeText": "^\\s*(?!#)(?:.*?):\\s*$",
       "action": { "indent": "indent" }
     }, {
-      "beforeText": "^\\s*(?:using|type|var|let|const)\\s*$",
+      "beforeText": "^\\s*(?:using|import|type|var|let|const)\\s*$",
       "action": { "indent": "indent" }
     }, {
       "beforeText": "(?:[a-zA-Z_][a-zA-Z0-9_]*\\s*=\\s*(ptr|ref|var)?\\s*(enum|object).*?)\\s*$",
