@@ -85,6 +85,12 @@
       "seq[${1:T}]"
     ],
     "description": "Nim sequence declaration"
+  }, "Array": {
+    "prefix": ["array", "arr"],
+    "body": [
+      "array[${1:size}, ${2:type}]"
+    ],
+    "description": "Nim array declaration"
   }, "Pragma": {
     "prefix": ["pragma", "pr"],
     "body": [
