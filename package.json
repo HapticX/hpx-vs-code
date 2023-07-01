@@ -2,7 +2,7 @@
   "name": "happyx",
   "displayName": "HappyX",
   "description": "HappyX web framework for Visual Studio Code",
-  "version": "3.5.5",
+  "version": "3.6.0",
   "publisher": "HapticX",
   "license": "MIT",
   "icon": "logo.png",
@@ -38,12 +38,6 @@
     "languages": [
       {
         "id": "nim",
-        "aliases": [
-          "HappyX",
-          "happyx",
-          "hpx",
-          "nim"
-        ],
         "extensions": [
           ".nim",
           ".nims"
@@ -130,6 +124,42 @@
         "command": "nim.restartNimsuggest",
         "title": "Restarts nimsuggest",
         "category": "Nim"
+      }
+    ],
+    "problemMatchers": [
+      {
+        "name": "nim",
+        "owner": "nim",
+        "fileLocation": "absolute",
+        "severity": "error",
+        "pattern": {
+          "regexp": "(?!^(\\.+|Hint|\\s+$))(>+ )?(.*)\\((\\d+),\\s(\\d+)\\)\\s+((Error|Warning|Hint):\\s(.*)|(template/generic instantiation from here.*))(\\s\\[.*\\])?",
+          "file": 3,
+          "line": 4,
+          "column": 5,
+          "severity": 7,
+          "message": 8
+        }
+      },
+      {
+        "name": "nim test",
+        "owner": "nim",
+        "fileLocation": "absolute",
+        "pattern": [
+          {
+            "regexp": "  \\[(OK|FAILED|SKIPPED)\\] (.*)",
+            "severity": 1,
+            "code": 2
+          },
+          {
+            "regexp": "    (.*)\\((\\d+), (\\d+)\\): (.*)",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "message": 4,
+            "loop": true
+          }
+        ]
       }
     ],
     "menus": {
@@ -285,11 +315,6 @@
         }
       }
     },
-    "breakpoints": [
-      {
-        "language": "nim"
-      }
-    ],
     "scripts": {
       "vscode:prepublish": "nimble release"
     }

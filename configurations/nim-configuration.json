@@ -36,6 +36,9 @@
   },
   "onEnterRules": [
     {
+      "beforeText": "^\\s*(\\b(return|raise|break|continue)\\b.*?|\\bdiscard\\b)$",
+      "action": {"indent": "outdent"}
+    }, {
       "beforeText": "^\\s*(?!#)(?:.*?)[:=]\\s*$",
       "action": { "indent": "indent" }
     }, {
@@ -48,10 +51,6 @@
       "beforeText": "^\\s*(?:serve|appRoutes|\"[^\"\n]+\"|get|put|link|delete|post|options|ws|wsConnect|wsClosed|wsError|wsMismatchProtocol).*?:\\s*$",
       "action": { "indent": "indent" }
     }, {
-      "beforeText": "^\\s*(\\b((return|raise|break|continue)\\b\\s*.*?|\\bdiscard\\b)\\s*",
-      "action": {"indent": "outdent"}
-    },
-    {
       "beforeText": "^(\\s+)[^\n]+\\n\\1",
       "action": { "indent": "outdent" }
     }, {

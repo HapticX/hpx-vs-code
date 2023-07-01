@@ -139,12 +139,13 @@ proc trace(pid: cint, projectFile: ProjectFileInfo, msg: JsObject) =
 
 
 proc closeCachedProcess(desc: NimSuggestProcessDescription) =
-  if desc.toJs().to(bool):
+  console.log(desc)
+  if not desc.isNil():
     try:
-      if desc.rpc.toJs().to(bool):
+      if not desc.rpc.isNil():
         desc.rpc.stop()
     finally:
-      if desc.process.toJs().to(bool):
+      if not desc.process.isNil():
         desc.process.kill()
 
 
@@ -190,7 +191,7 @@ proc getNimSuggestProcess(nimProject: ProjectFileInfo): Future[NimSuggestProcess
     ) =
       var
         nimConfig = vscode.workspace.getConfiguration("nim")
-        args = @["--epc".cstring, "--v2".cstring]
+        args = @["--epc".cstring, "--v3".cstring]
       if nimConfig.getBool("logNimsuggest"):
         args.add("--log".cstring)
       if nimConfig.getBool("useNimsuggestCheck"):

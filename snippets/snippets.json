@@ -15,8 +15,7 @@
       "    discard"
     ],
     "description": "HappyX component declaration"
-  },
-  "Request Model Declaration": {
+  }, "Request Model Declaration": {
     "prefix": ["model", "requestModel"],
     "body": [
       "model ${1:ModelName}:",
@@ -26,8 +25,7 @@
       "  ${4:field2}: ${5:string}"
     ],
     "description": "HappyX Request Model declaration"
-  },
-  "Mount Declaration": {
+  }, "Mount Declaration": {
     "prefix": ["mount"],
     "body": [
       "mount ${1:MountName}:",
@@ -36,8 +34,7 @@
       "    \"Hello, world!\""
     ],
     "description": "HappyX Mount declaration"
-  },
-  "Path Params": {
+  }, "Path Params": {
     "prefix": ["path-params"],
     "body": [
       "pathParams:",
@@ -48,8 +45,7 @@
       "    default = ${3:100}"
     ],
     "description": "HappyX Path Params declaration"
-  },
-  "Register CORS": {
+  }, "Register CORS": {
     "prefix": ["register-cors", "cors", "reg-cors"],
     "body": [
       "regCORS:",
@@ -59,8 +55,7 @@
       "  headers: \"*\""
     ],
     "description": "HappyX CORS registration"
-  },
-  "Application Routes": {
+  }, "Application Routes": {
     "prefix": ["app-routes"],
     "body": [
       "appRoutes(${1:\"app\"}):",
@@ -68,8 +63,7 @@
       "    \"Hello, world!\""
     ],
     "description": "HappyX CORS registration"
-  },
-  "Serve": {
+  }, "Serve": {
     "prefix": ["serve"],
     "body": [
       "serve(${1:\"127.0.0.1\"}, ${2:5000}):",
@@ -77,8 +71,7 @@
       "    \"Hello, world!\""
     ],
     "description": "HappyX CORS registration"
-  },
-  "Async Procedure": {
+  }, "Async Procedure": {
     "prefix": ["async-proc", "async-func", "async-method"],
     "body": [
       "${1:proc} ${2:name}(${3:})${4:: Future[void]} {. async .} =",
@@ -86,5 +79,17 @@
       "  ${6:discard}"
     ],
     "description": "Nim async procedure"
+  }, "Sequence": {
+    "prefix": ["seq"],
+    "body": [
+      "seq[${1:T}]"
+    ],
+    "description": "Nim sequence declaration"
+  }, "Pragma": {
+    "prefix": ["pragma", "pr"],
+    "body": [
+      "{.${1:pragmaName}.}"
+    ],
+    "description": "Nim pragma declaration"
   }
 }

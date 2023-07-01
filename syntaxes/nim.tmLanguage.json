@@ -1,6 +1,7 @@
 {
-	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-	"name": "Nim",
+	"name": "nim",
+	"fileTypes": ["nim"],
+	"scopeName": "source.nim",
 	"patterns": [
 		{"include": "#nimConstatns"},
 		{"include": "#pathParams"},
@@ -28,7 +29,7 @@
 					"match": "\\b(void|range|countdown|countup|owned|cfloat|cschar|cshort|csize_t|cuint|cdouble|culong|culonglong|cushort|typedesc)\\b"
 				}, {
 					"name": "keyword.builtin.nim",
-					"match": "\\b(echo|assert|do[aA]ssert|defined|declared|declaredInScope|shl|shr|div|mod|or|is|and|xor|notin|in|out|await|waitFor|asyncCheck)\\b"
+					"match": "\\b(echo|assert|do[aA]ssert|defined|declared|declaredInScope|shl|shr|div|mod|or|is|and|xor|notin|not|in|out|await|waitFor|asyncCheck)\\b"
 				}, {
 					"name": "keyword.macros.nim",
 					"match": "\\b(model|serve|appRoutes|component|mount|regCORS|pathParams|remember|translatable)\\b"
@@ -175,7 +176,7 @@
 					"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=\\()"
 				}, {
 					"name": "entity.name.function.nim",
-					"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)(?<!(and|or|as|in|notin|xor|shr|shl))\\s+(?=[\\w\\d]+)(?!(and|or|as|in|notin|xor|shr|shl))"
+					"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s+(?=[\\w\\d]+)(?!(and|or|as|in|notin|xor|shr|shl))"
 				}, {
 					"name": "entity.name.function.nim",
 					"match": "(?<=\\([\\s+\\S]+?\\))\\s*\\b([a-zA-Z_][a-zA-Z0-9_]*)"
@@ -331,6 +332,5 @@
 			"name": "markup.heading.nim",
 			"match": "\\b(appType|CompileDate|CompileTime|cpuEndian|hostCPU|hostOS|Inf|isMainModule|NaN|NegInf|NimMajor|NimMinor|NimPatch|NimVersion|QuitSuccess|QuitFailure)\\b"
 		}
-	},
-	"scopeName": "source.nim"
+	}
 }
