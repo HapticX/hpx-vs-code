@@ -8,8 +8,9 @@
 		{"include": "#comments"},
 		{"include": "#keywords"},
 		{"include": "#pragmas"},
-		{"include": "#functions"},
 		{"include": "#scriptJs"},
+		{"include": "#rawHtml"},
+		{"include": "#functions"},
 		{"include": "#stringBlocks"},
 		{"include": "#operators"}
 	],
@@ -67,7 +68,7 @@
 		},
 		"regexString": {
 			"name": "string.quoted.double.nim",
-			"begin": "(?<=(re|r|newRegExp|regExp)(\\s*\\(\\s*)?)\"",
+			"begin": "(?<=(re|r|rex|newRegExp|regExp)(\\s*\\(\\s*)?)\"",
 			"end": "\"",
 			"patterns": [
 				{
@@ -114,13 +115,28 @@
 			]
 		},
 		"strings": {
-			"name": "string.quoted.double.nim",
-			"begin": "\"",
-			"end": "\"",
 			"patterns": [
 				{
-					"name": "constant.character.escape.nim",
-					"match": "\\\\."
+					"name": "string.quoted.double.nim",
+					"begin": "\"\"\"",
+					"end": "\"\"\"",
+					"patterns": [
+						{
+							"name": "constant.character.escape.nim",
+							"match": "\\\\."
+						}
+					]
+				},
+				{
+					"name": "string.quoted.double.nim",
+					"begin": "\"",
+					"end": "\"",
+					"patterns": [
+						{
+							"name": "constant.character.escape.nim",
+							"match": "\\\\."
+						}
+					]
 				}
 			]
 		},
@@ -177,7 +193,7 @@
 					"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=\\()"
 				}, {
 					"name": "entity.name.function.nim",
-					"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s+(?=[\\w\\d]+)(?!(and|or|as|in|notin|xor|shr|shl))"
+					"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s+(?=[\\w\\d]+)(?!(and|or|as|in|notin|xor|shr|shl|else|of))"
 				}, {
 					"name": "entity.name.function.nim",
 					"match": "(?<=\\([\\s+\\S]+?\\))\\s*\\b([a-zA-Z_][a-zA-Z0-9_]*)"
@@ -279,19 +295,34 @@
 			"patterns": [{"include": "source.js"}]
 		},
 		"scriptJs": {
-			"begin": "(?<=[ \t]+[thTH]*[sS]cript\\s*.*?:)\\s*\"\"\"",
+			"begin": "(?<=[ \t]+[thTH]*[sS]cript\\s*.*?:)\\s*(\"\"\"|\")",
 			"beginCaptures": {
 				"0": {
 					"name": "string.quoted.double.nim"
 				}
 			},
-			"end": "\"\"\"",
+			"end": "(\"\"\"|\")",
 			"endCaptures": {
 				"0": {
 					"name": "string.quoted.double.nim"
 				}
 			},
 			"patterns": [{"include": "source.js"}]
+		},
+		"rawHtml": {
+			"begin": "(?<=[ \t]+rawHtml\\s*.*?:)\\s*(\"\"\"|\")",
+			"beginCaptures": {
+				"0": {
+					"name": "string.quoted.double.nim"
+				}
+			},
+			"end": "(\"\"\"|\")",
+			"endCaptures": {
+				"0": {
+					"name": "string.quoted.double.nim"
+				}
+			},
+			"patterns": [{"include": "text.html.derivative"}]
 		},
 		"codeGenPragma": {
 			"name": "string.quoted.double.nim",
