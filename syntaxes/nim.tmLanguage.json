@@ -28,7 +28,7 @@
 					"match": "\\b(object|enum|distinct|concept|untyped|typed|string|char|auto|any|tuple|seq|set|ref|ptr|pointer|sink|array|open[aA]rray|int\\d{0,2}|float\\d{0,2}|uint\\d{0,2}|byte|cstring|cstring[aA]rray|cchar|cint|clong|clongdouble|clonglong)\\b"
 				}, {
 					"name": "keyword.types.nim",
-					"match": "\\b(void|range|countdown|countup|owned|cfloat|cschar|cshort|csize_t|cuint|cdouble|culong|culonglong|cushort|typedesc)\\b"
+					"match": "\\b(void|range|countdown|countup|owned|varargs|cfloat|cschar|cshort|csize_t|cuint|cdouble|culong|culonglong|cushort|typedesc)\\b"
 				}, {
 					"name": "keyword.builtin.nim",
 					"match": "\\b(echo|assert|do[aA]ssert|defined|declared|declaredInScope|shl|shr|div|mod|or|is|and|xor|notin|not|in|out|await|waitFor|asyncCheck)\\b"
@@ -190,7 +190,7 @@
 					"match": "\\b[A-Z][A-Za-z0-9_]*\\b"
 				}, {
 					"name": "entity.name.function.nim",
-					"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=\\()"
+					"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\*?\\s*(?=\\()"
 				}, {
 					"name": "entity.name.function.nim",
 					"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s+(?=[\\w\\d]+)(?!(and|or|as|in|notin|xor|shr|shl|else|of))"
