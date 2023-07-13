@@ -20,22 +20,22 @@
 			"patterns": [
 				{
 					"name": "keyword.control.nim",
-					"match": "\\b(if|elif|else|case|of|while|for|return|asm|yield|when|interface|bind|using|break|continue|discard|static|block|do|defer|try|finally|raise|func|proc|method|iterator|type|template|macro|converter|cast|as|except|import|export|include|from|var|let|const)\\b"
+					"match": "(?<!`)\\b(if|elif|else|case|of|while|for|return|asm|yield|when|interface|bind|using|break|continue|discard|static|block|do|defer|try|finally|raise|func|proc|method|iterator|type|template|macro|converter|cast|as|except|import|export|include|from|var|let|const)\\b(?!`)"
 				}, {
 					"name": "keyword.control.nim",
 					"match": "\\bnew\\b(?=[ \t]+[\\S])"
 				}, {
 					"name": "keyword.types.nim",
-					"match": "\\b(object|enum|distinct|concept|untyped|typed|string|char|auto|any|tuple|seq|set|ref|ptr|pointer|sink|array|open[aA]rray|int\\d{0,2}|float\\d{0,2}|uint\\d{0,2}|byte|cstring|cstring[aA]rray|cchar|cint|clong|clongdouble|clonglong)\\b"
+					"match": "(?<!`)\\b(object|enum|distinct|concept|untyped|typed|string|char|auto|any|tuple|seq|set|ref|ptr|pointer|sink|array|open[aA]rray|int\\d{0,2}|float\\d{0,2}|uint\\d{0,2}|byte|cstring|cstring[aA]rray|cchar|cint|clong|clongdouble|clonglong)\\b(?!`)"
 				}, {
 					"name": "keyword.types.nim",
-					"match": "\\b(void|range|countdown|countup|owned|varargs|cfloat|cschar|cshort|csize_t|cuint|cdouble|culong|culonglong|cushort|typedesc)\\b"
+					"match": "(?<!`)\\b(void|range|countdown|countup|owned|varargs|cfloat|cschar|cshort|csize_t|cuint|cdouble|culong|culonglong|cushort|typedesc)\\b(?!`)"
 				}, {
 					"name": "keyword.builtin.nim",
-					"match": "\\b(echo|assert|do[aA]ssert|defined|declared|declaredInScope|shl|shr|div|mod|or|is|and|xor|notin|not|in|out|await|waitFor|asyncCheck)\\b"
+					"match": "(?<!`)\\b(echo|assert|do[aA]ssert|defined|declared|declaredInScope|shl|shr|div|mod|or|is|and|xor|notin|not|in|out|await|waitFor|asyncCheck)\\b(?!`)"
 				}, {
 					"name": "keyword.macros.nim",
-					"match": "\\b(model|serve|appRoutes|component|mount|regCORS|pathParams|remember|translatable)\\b"
+					"match": "(?<!`)\\b(model|serve|appRoutes|component|mount|regCORS|pathParams|remember|translatable)\\b(?!`)"
 				}, {
 					"name": "keyword.components.nim",
 					"match": "`\\b(script|style)\\b`\\s+as\\s+\\b(css|js)\\b"
