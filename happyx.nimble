@@ -1,6 +1,6 @@
 # Package
 
-version     = "3.9.4"
+version     = "3.9.5"
 author      = "HapticX"
 description = "HappyX"
 license     = "MIT"
