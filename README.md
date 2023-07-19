@@ -4,6 +4,8 @@
 
 Official VS Code plugin for use HappyX
 
+[![Get Extension](https://img.shields.io/badge/Download-1b1e2b?style=for-the-badge&logo=visualstudiocode&logoColor=f1fa8c&label=Extension&labelColor=2b2e3b)]([https://github.com/HapticX/hpx-vs-code](https://marketplace.visualstudio.com/items?itemName=HapticX.happyx))
+
 </div>
 
 ## Features ✨
