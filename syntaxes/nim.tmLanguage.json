@@ -169,7 +169,7 @@
 					"match": "<[a-zA-Z][a-zA-Z0-9_]*>"
 				}, {
 					"name": "entity.name.function.nim",
-					"match": "\\[[a-zA-Z][a-zA-Z0-9_]*:[a-zA-Z][a-zA-Z0-9_]*(\\[m\\])?(:[a-zA-Z]+)?\\]"
+					"match": "\\[[a-zA-Z][a-zA-Z0-9_]*:[a-zA-Z][a-zA-Z0-9_]*(\\[m\\])?(:[a-zA-Z\\-_]+)?\\]"
 				}, {
 					"name": "constant.character.escape.nim",
 					"match": "\\\\."
