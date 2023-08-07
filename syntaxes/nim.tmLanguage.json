@@ -59,7 +59,7 @@
 			"patterns": [
 				{
 					"name": "string.quoted.double.nim",
-					"match": "'.'"
+					"match": "('\\.'|'.')"
 				},
 				{"include": "#asmCode"},
 				{"include": "#regexString"},
