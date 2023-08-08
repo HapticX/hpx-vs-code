@@ -1,6 +1,6 @@
 # Package
 
-version     = "3.9.9"
+version     = "3.9.10"
 author      = "HapticX"
 description = "HappyX"
 license     = "MIT"
@@ -11,8 +11,8 @@ bin         = @["extension"]
 
 # Deps
 
-requires "nim >= 1.6.10"
-requires "compiler >= 1.6.10"
+requires "nim >= 1.6.14"
+requires "compiler >= 1.6.14"
 
 import std/os
 

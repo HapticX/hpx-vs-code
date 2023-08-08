@@ -59,10 +59,11 @@
 			"patterns": [
 				{
 					"name": "string.quoted.double.nim",
-					"match": "('\\.'|'.')"
+					"match": "('\\\\.'|'.')"
 				},
 				{"include": "#asmCode"},
 				{"include": "#regexString"},
+				{"include": "#fmtMultiLineString"},
 				{"include": "#fmtString"},
 				{"include": "#strings"}
 			]
@@ -99,15 +100,31 @@
 				}
 			]
 		},
-		"fmtString": {
+		"fmtMultiLineString": {
 			"name": "string.quoted.double.nim",
-			"begin": "(?<=fmt)\\s*(\\(\\s*)?(\"\"\"|\")",
-			"end": "(\"\"\"|\")",
+			"begin": "(?<=fmt)\\s*(\\(\\s*)?\"\"\"",
+			"end": "\"\"\"",
 			"patterns": [
 				{
 					"name": "constant.nim",
-					"begin": "\\{",
-					"end": "\\}",
+					"begin": "(?<!\\{)\\{(?!\\{)",
+					"end": "(?<!\\})\\}(?!\\})",
+					"patterns": [{"include": "source.nim"}]
+				}, {
+					"name": "constant.character.escape.nim",
+					"match": "\\\\."
+				}
+			]
+		},
+		"fmtString": {
+			"name": "string.quoted.double.nim",
+			"begin": "(?<=fmt)\\s*(\\(\\s*)?\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.nim",
+					"begin": "(?<!\\{)\\{(?!\\{)",
+					"end": "(?<!\\})\\}(?!\\})",
 					"patterns": [{"include": "source.nim"}]
 				}, {
 					"name": "constant.character.escape.nim",
