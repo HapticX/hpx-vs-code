@@ -1,0 +1,75 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Hpx",
+	"scopeName": "source.hpx",
+  "patterns": [
+    {"include": "#keywords"},
+    {"include": "#strings"},
+    {"include": "#tags"}
+  ],
+	"repository": {
+    "keywords": {
+      "patterns": [
+        {
+          "begin": "^<\\s*(template)\\s*>",
+          "end": "^</\\s*(template)\\s*>",
+          "beginCaptures": {"0": {"name": "keyword.control.hpx"}},
+          "endCaptures": {"0": {"name": "keyword.control.hpx"}},
+          "patterns": [{"include": "text.html.derivative"}]
+        }, {
+          "begin": "^<\\s*(script)\\s*>",
+          "end": "</\\s*(script)\\s*>",
+          "beginCaptures": {"0": {"name": "keyword.control.hpx"}},
+          "endCaptures": {"0": {"name": "keyword.control.hpx"}},
+          "patterns": [{"include": "source.nim"}]
+        }, {
+          "begin": "^<\\s*(script\\s+js)\\s*>",
+          "end": "</\\s*(script)\\s*>",
+          "beginCaptures": {"0": {"name": "keyword.control.hpx"}},
+          "endCaptures": {"0": {"name": "keyword.control.hpx"}},
+          "patterns": [{"include": "source.js"}]
+        }, {
+          "begin": "<\\s*(style)\\s*>",
+          "end": "^</\\s*(style)\\s*>",
+          "beginCaptures": {"0": {"name": "keyword.control.hpx"}},
+          "endCaptures": {"0": {"name": "keyword.control.hpx"}},
+          "patterns": [{"include": "source.css"}]
+        }
+      ]
+    },
+		"strings": {
+			"name": "string.quoted.double.hpx",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.hpx",
+					"match": "\\\\."
+				}
+			]
+		},
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.block.documentation.hpx",
+          "begin": "\\{#",
+          "end": "#\\}"
+        }
+      ]
+    },
+    "tags": {
+      "begin": "<\\/?",
+      "end": ">",
+      "patterns": [
+        {
+          "name": "keyword.control.hpx",
+          "match": "(?<=\\<\\/?\\s*)[a-zA-Z][a-zA-Z0-9\\-_]*"
+        }, {
+          "name": "entity.name.function.hpx",
+          "match": "\\b[a-zA-Z][a-zA-Z0-9_\\-]*\\b(?=\\s*=\\s*)"
+        },
+        {"include": "#strings"}
+      ]
+    }
+  }
+}

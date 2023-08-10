@@ -2,7 +2,7 @@
   "name": "happyx",
   "displayName": "HappyX",
   "description": "HappyX web framework for Visual Studio Code",
-  "version": "3.9.10",
+  "version": "4.0.0",
   "publisher": "HapticX",
   "license": "MIT",
   "icon": "logo.png",
@@ -19,7 +19,7 @@
     "nimble"
   ],
   "engines": {
-    "vscode": "^1.79.2"
+    "vscode": "^1.81.0"
   },
   "galleryBanner": {
     "color": "#EF7575",
@@ -60,6 +60,16 @@
         "configuration": "./configurations/nimble-configuration.json"
       },
       {
+        "id": "hpx",
+        "aliases": [
+          "Hpx"
+        ],
+        "extensions": [
+          ".hpx"
+        ],
+        "configuration": "./configurations/hpx-configuration.json"
+      },
+      {
         "id": "nimja",
         "aliases": [
           "Nimja",
@@ -86,6 +96,11 @@
         "language": "nimja",
         "scopeName": "source.nimja",
         "path": "./syntaxes/nimja.tmLanguage.json"
+      },
+      {
+        "language": "hpx",
+        "scopeName": "source.hpx",
+        "path": "./syntaxes/hpx.tmLanguage.json"
       }
     ],
     "snippets": [

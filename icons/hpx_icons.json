@@ -8,12 +8,16 @@
     },
     "nim_config": {
       "iconPath": "./settings.svg"
+    },
+    "hpx_template": {
+      "iconPath": "./hpx.svg"
     }
   },
   "fileExtensions": {
     "nim": "nim_lang",
     "nimble": "nim_lang",
     "nimja": "nimja_template",
+    "hpx": "hpx_template",
     "nim.cfg": "nim_config"
   },
   "fileNames": {

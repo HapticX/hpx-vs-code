@@ -1,0 +1,51 @@
+{
+  "comments": {
+    "lineComment": "#",
+    "blockComment": ["<!--", "-->"]
+  },
+  "brackets": [
+    ["{", "}"],
+    ["[", "]"],
+    ["(", ")"]
+  ],
+  "autoClosingPairs": [
+    ["<!--", "-->"],
+    ["{", "}"],
+    ["[", "]"],
+    ["(", ")"],
+    { "open": "<", "close": ">", "notIn": ["script", "scriptJs", "style", "string"] },
+    { "open": "\"\"\"", "close": "\"\"\"", "notIn": ["string"] },
+    { "open": "\"", "close": "\"", "notIn": ["string"] },
+    { "open": "'", "close": "'", "notIn": ["string"] }
+  ],
+  "surroundingPairs": [
+    ["{.", ".}"],
+    ["{", "}"],
+    ["[", "]"],
+    ["(", ")"],
+    ["\"\"\"", "\"\"\""],
+    ["\"", "\""],
+    ["'", "'"]
+  ],
+  "folding": {
+    "markers": {
+      "start": "^\\s*//\\s*#?region\\b",
+      "end": "^\\s*//\\s*#?endregion\\b"
+    }
+  },
+  "onEnterRules": [
+    {
+      "beforeText": "^\\s*(<\\s*\\w+[\\s\\S]+?>)$",
+      "action": { "indent": "indent" }
+    }, {
+      "beforeText": "\\{$",
+      "action": { "indent": "indent" }
+    }, {
+      "beforeText": "^\\s*(?:##).*?\\s*$",
+      "action": {
+        "indent": "none",
+        "appendText": "## "
+      }
+    }
+  ]
+}

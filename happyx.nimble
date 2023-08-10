@@ -1,6 +1,6 @@
 # Package
 
-version     = "3.9.10"
+version     = "4.0.0"
 author      = "HapticX"
 description = "HappyX"
 license     = "MIT"
@@ -25,4 +25,4 @@ task main, "This compiles the vscode Nim extension":
   exec "nim js --outdir:out --sourceMap src" / "extension.nim"
 
 task release, "This compiles a release version":
-  exec "nim js -d:release --opt:size --outdir:out -a:off -x:off -w:off --hints:off --sourceMap src" / "extension.nim"
+  exec "nim js -d:release --opt:size --outdir:out -a:off -x:off -w:off --hints:off --panics:off --lineDir:off --sourceMap src" / "extension.nim"
