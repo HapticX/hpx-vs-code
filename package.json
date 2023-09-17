@@ -2,7 +2,7 @@
   "name": "happyx",
   "displayName": "HappyX",
   "description": "HappyX web framework for Visual Studio Code",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "publisher": "HapticX",
   "license": "MIT",
   "icon": "logo.png",
@@ -19,7 +19,7 @@
     "nimble"
   ],
   "engines": {
-    "vscode": "^1.81.0"
+    "vscode": "^1.81.2"
   },
   "galleryBanner": {
     "color": "#EF7575",
