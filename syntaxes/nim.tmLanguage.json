@@ -35,7 +35,7 @@
 					"match": "(?<!`)\\b(echo|inc|dec|assert|do[aA]ssert|defined|declared|declaredInScope|shl|shr|div|mod|or|is|and|xor|notin|not|in|out|await|waitFor|asyncCheck)\\b(?!`)"
 				}, {
 					"name": "keyword.macros.nim",
-					"match": "(?<!`)\\b(model|serve|appRoutes|component|mount|regCORS|pathParams|remember|translatable|use)\\b(?!`)"
+					"match": "(?<!`)\\b(model|serve|appRoutes|liveview|component|mount|regCORS|pathParams|remember|translatable|use)\\b(?!`)"
 				}, {
 					"name": "keyword.components.nim",
 					"match": "`\\b(script|style)\\b`\\s+as\\s+\\b(css|js)\\b"
