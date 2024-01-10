@@ -1,9 +1,8 @@
 ## supports auto-completion of module imports... this feels a bit janky
 
-import
-  platform/vscodeApi,
-  platform/js/[jsNodeCp, jsNodeFs, jsNodePath, jsString, jsre],
-  std/jsconsole
+import platform/vscodeApi
+import platform/js/[jsNodeCp, jsNodeFs, jsNodePath, jsString, jsre]
+import std/jsconsole
 
 from nimProjects import getProjects, isProjectMode
 from tools/nimBinTools import getNimExecPath, getNimbleExecPath
@@ -14,17 +13,15 @@ type
     author*: cstring
     description*: cstring
     version*: cstring
+
   NimModuleInfo = ref NimModuleInfoObj
   NimModuleInfoObj {.importc.} = ref object of JsRoot
     name*: cstring
     fullName*: cstring
     path*: cstring
 
-
-var
-  nimbleModules: seq[NimbleModuleInfo] = @[]
-  nimModules = newJsAssoc[cstring, seq[NimModuleInfo]]()
-
+var nimbleModules: seq[NimbleModuleInfo] = @[]
+var nimModules = newJsAssoc[cstring, seq[NimModuleInfo]]()
 
 proc getNimDirectories(projectDir: cstring, projectFile: cstring): Promise[seq[cstring]] =
   return newPromise(proc(
@@ -52,8 +49,8 @@ proc getNimDirectories(projectDir: cstring, projectFile: cstring): Promise[seq[c
     )
   )
 
-
-proc createNimModule(projectDir, rootDir, dir, file: cstring): NimModuleInfo =
+proc createNimModule(projectDir: cstring, rootDir: cstring, dir: cstring,
+    file: cstring): NimModuleInfo =
   var nimModule = NimModuleInfo{
     name: file[0 .. (file.len - 5)],
     path: path.join(dir, file)
@@ -63,14 +60,15 @@ proc createNimModule(projectDir, rootDir, dir, file: cstring): NimModuleInfo =
     nimModule.fullName = moduleDir & "." & nimModule.name
   else:
     nimModule.fullName = nimModule.name
-  nimModule
 
+  return nimModule
 
-proc walkDir(projectDir: cstring, rootDir: cstring, dir: cstring, singlePass: bool) =
+proc walkDir(projectDir: cstring, rootDir: cstring, dir: cstring,
+    singlePass: bool): void =
   fs.readdir(dir, proc(err: ErrnoException, files: seq[cstring]) =
     # if files.toJs().to(bool):
     for file in files:
-      var fullPath = path.join(file)
+      var fullPath = path.join(dir, file)
       if fs.statSync(fullPath).isDirectory():
         if not singlePass:
           walkDir(projectDir, rootDir, fullPath, false)
@@ -101,7 +99,6 @@ proc initNimDirectories(projectDir: cstring, projectFile: cstring): Promise[void
   else:
     newEmptyPromise()
 
-
 proc getNimbleModules(rootDir: cstring): Promise[seq[cstring]] =
   return newPromise(proc(
         resolve: proc(v: seq[cstring]), reject: proc(reasons: JsObject)
@@ -119,7 +116,6 @@ proc getNimbleModules(rootDir: cstring): Promise[seq[cstring]] =
         resolve(res)
     )
   )
-
 
 proc initNimbleModules(rootDir: cstring): Promise[seq[cstring]] =
   getNimbleModules(rootDir).then(proc(nimbleModuleNames: seq[cstring]) =
@@ -143,8 +139,8 @@ proc initNimbleModules(rootDir: cstring): Promise[seq[cstring]] =
         console.log("Module incorrect " & moduleName, getCurrentExceptionMsg().cstring)
   ).toJs().to(Promise[seq[cstring]])
 
-
-proc getImports*(prefix, projectDir: cstring): seq[VscodeCompletionItem] =
+proc getImports*(prefix: cstring, projectDir: cstring): seq[
+    VscodeCompletionItem] =
   console.log("getImports", jsArguments)
   var suggestions: seq[VscodeCompletionItem] = @[]
   for nimbleModule in nimbleModules:
@@ -180,13 +176,11 @@ proc getImports*(prefix, projectDir: cstring): seq[VscodeCompletionItem] =
         suggestions.add(suggest)
       if suggestions.len >= 100:
         return suggestions
-  suggestions
-
+  return suggestions
 
 proc initImports*(): Promise[void] =
-  var
-    folders = vscode.workspace.workspaceFolders
-    prevPromise: Promise[void] = newEmptyPromise()
+  var folders = vscode.workspace.workspaceFolders
+  var prevPromise: Promise[void] = newEmptyPromise()
   if folders.toJs().to(bool):
     prevPromise = initNimbleModules(folders[0].uri.fsPath).toJs().to(Promise[void])
 
@@ -197,8 +191,8 @@ proc initImports*(): Promise[void] =
             project.filePath))
   elif folders.toJs().to(bool):
     prevPromise.then(proc() = discard initNimDirectories(folders[0].uri.fsPath, ""))
-  prevPromise
 
+  return prevPromise
 
 proc addFileToImports*(file: cstring): Promise[void] =
   if isProjectMode():
@@ -209,19 +203,23 @@ proc addFileToImports*(file: cstring): Promise[void] =
         if not mods.toJs().to(bool):
           mods = @[]
 
-        mods.add(createNimModule(projectDir, projectDir, path.dirname(file), path.basename(file)))
+        mods.add(createNimModule(projectDir, projectDir, path.dirname(file),
+            path.basename(file)))
+
         nimModules[projectDir] = mods
   elif vscode.workspace.workspaceFolders.toJs().to(bool):
-    var
-      projectDir = vscode.workspace.workspaceFolders[0].uri.fsPath
-      mods = nimModules[projectDir]
+    var projectDir = vscode.workspace.workspaceFolders[0].uri.fsPath
+    var mods = nimModules[projectDir]
     if not mods.toJs().to(bool):
       mods = @[]
-    mods.add(createNimModule(projectDir, projectDir, path.dirname(file), path.basename(file)))
-    nimModules[projectDir] = mods
-  newEmptyPromise()
+    mods.add(createNimModule(projectDir, projectDir, path.dirname(file),
+        path.basename(file)))
 
-proc splice[T](x: seq[T], n: cint) {.importcpp.}
+    nimModules[projectDir] = mods
+
+  return newEmptyPromise()
+
+proc splice[T](x: seq[T], n: cint): void {.importcpp.}
 
 proc removeFileFromImports*(file: cstring): Promise[void] =
   for key, items in nimModules:
@@ -231,4 +229,5 @@ proc removeFileFromImports*(file: cstring): Promise[void] =
         items.splice(i)
       else:
         inc i
-  newEmptyPromise()
+
+  return newEmptyPromise()

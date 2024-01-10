@@ -3,32 +3,32 @@
 ##      have specific status vs progress indicator guidance and we're spamming
 ##      the api, this should get reworked.
 
-import
-  platform/vscodeApi,
-  std/jsconsole,
-  nimMode
+import platform/vscodeApi
+import std/jsconsole
 
-var
-  statusBarEntry: VscodeStatusBarItem
-  progressBarEntry: VscodeStatusBarItem
+import nimMode
 
-proc showHideStatus*() =
+var statusBarEntry: VscodeStatusBarItem
+var progressBarEntry: VscodeStatusBarItem
+
+proc showHideStatus*(): void =
   if statusBarEntry.isNil():
     return
+
   if vscode.window.activeTextEditor.isNil():
     statusBarEntry.hide()
     return
+
   if vscode.languages.match(mode, vscode.window.activeTextEditor.document) > 0:
     statusBarEntry.show()
     return
+
   statusBarEntry.hide()
 
+proc hideNimStatus*() = statusBarEntry.dispose()
+proc hideNimProgress*() = progressBarEntry.dispose()
 
-template hideNimStatus*() = statusBarEntry.dispose()
-template hideNimProgress*() = progressBarEntry.dispose()
-
-
-proc showNimStatus*(msg, cmd, tooltip: cstring) =
+proc showNimStatus*(msg: cstring, cmd: cstring, tooltip: cstring): void =
   statusBarEntry = vscode.window.createStatusBarItem(
     VscodeStatusBarAlignment.right,
     numberMinValue
@@ -39,8 +39,7 @@ proc showNimStatus*(msg, cmd, tooltip: cstring) =
   statusBarEntry.tooltip = tooltip
   statusBarEntry.show()
 
-
-proc showNimProgress*(msg: cstring) =
+proc showNimProgress*(msg: cstring): void =
   progressBarEntry = vscode.window.createStatusBarItem(
     VscodeStatusBarAlignment.right,
     numberMinValue
@@ -50,6 +49,4 @@ proc showNimProgress*(msg: cstring) =
   progressBarEntry.tooltip = msg
   progressBarEntry.show()
 
-
-proc updateNimProgress*(msg: cstring) =
-  progressBarEntry.text = msg
+proc updateNimProgress*(msg: cstring): void = progressBarEntry.text = msg

@@ -1,17 +1,16 @@
 ## this extension ain't pretty, but maybe your code might be? This works with
 ## nim pretty to clean things up.
 
-import
-  platform/vscodeApi,
-  platform/js/[jsNodeCp, jsNodeFs],
-  std/jsconsole,
-  nimUtils
+import platform/vscodeApi
+import platform/js/[jsNodeCp, jsNodeFs]
 
+import std/jsconsole
 from std/strformat import fmt
+
+import nimUtils
 from tools/nimBinTools import getNimPrettyExecPath
 
 var extensionContext*: VscodeExtensionContext
-
 
 proc provideDocumentFormattingEdits*(
   doc: VscodeTextDocument,
@@ -23,19 +22,18 @@ proc provideDocumentFormattingEdits*(
     vscode.window.showInformationMessage("No 'nimpretty' binary could be found in PATH environment variable")
     return ret
 
-  var
-    file = getDirtyFile(doc)
-    config = vscode.workspace.getConfiguration("nim")
-    res = cp.spawnSync(
+  var file = getDirtyFile(doc)
+  var config = vscode.workspace.getConfiguration("nim")
+  var res = cp.spawnSync(
       getNimPrettyExecPath(),
       @[
-        cstring "--backup:OFF",
-        "--indent:" & cstring($(config.getInt("nimprettyIndent"))),
-        "--maxLineLen:" & cstring($(config.getInt("nimprettyMaxLineLen"))),
-        file
-      ],
-      SpawnSyncOptions{cwd: extensionContext.extensionPath}
-    )
+          cstring "--backup:OFF",
+          "--indent:" & cstring($(config.getInt("nimprettyIndent"))),
+          "--maxLineLen:" & cstring($(config.getInt("nimprettyMaxLineLen"))),
+          file
+    ],
+    SpawnSyncOptions{cwd: extensionContext.extensionPath}
+  )
 
   if res.status != 0:
     console.error("Formatting failed:", res.error)
@@ -46,12 +44,11 @@ proc provideDocumentFormattingEdits*(
     {.emit: "throw { message: `msg` }".}
     return ret
 
-  var
-    content = fs.readFileSync(file, "utf-8")
-    `range` = doc.validateRange(vscode.newRange(
+  var content = fs.readFileSync(file, "utf-8")
+  var `range` = doc.validateRange(vscode.newRange(
       vscode.newPosition(0, 0),
       vscode.newPosition(1000000, 1000000))
-    )
+  )
   ret.add(vscode.textEditReplace(`range`, content))
   return ret
 

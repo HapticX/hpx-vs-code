@@ -3,19 +3,18 @@
 ## data inside our silly little flatfile database and reuses it between runs
 ## timestamps are used for invalidating the cache.
 
-import
-  platform/vscodeApi,
-  platform/js/[jsNodeFs, jsNodePath, jsString, jsre],
-  store/flatdbnode,
-  std/[jsconsole, sequtils, asyncjs, os],
-  nimStatus,
-  nimSuggestExec
+import platform/vscodeApi
+import platform/js/[jsNodeFs, jsNodePath, jsString, jsre]
+import store/flatdbnode
 
+import std/[jsconsole, sequtils, asyncjs, os]
 from std/jscore import Math, max
 
+import nimStatus, nimSuggestExec
 
 let
   dbVersion: cint = 5
+
 var
   dbFiles: FlatDb
   dbTypes: FlatDb
@@ -24,6 +23,7 @@ type
   FileData = ref object of JsRoot
     file*: cstring
     timestamp*: cint
+
   SymbolData = ref object
     ws*: cstring
       ## TODO should be named more like workspace folder, not ws (workspace)
@@ -33,10 +33,10 @@ type
     `type`*: cstring
     container*: cstring
     kind*: VscodeSymbolKind
+
   IndexExcludeGlobs* = JsAssoc[cstring, bool]
     ## glob string -> bool mapping, comes from the files watcherExclude config
     ## we use this to avoid indexing things that we're not going to watch.
-
 
 proc vscodeKindFromNimSym(kind: cstring): VscodeSymbolKind =
   case $kind
@@ -50,7 +50,6 @@ proc vscodeKindFromNimSym(kind: cstring): VscodeSymbolKind =
   of "skTemplate": VscodeSymbolKind.`interface`
   of "skType": VscodeSymbolKind.class
   else: VscodeSymbolKind.property
-
 
 proc getFileSymbols*(
     file: cstring,
@@ -73,11 +72,10 @@ proc getFileSymbols*(
       dirtyFileContent
   )
 
-  var
-    symbols: seq[VscodeSymbolInformation] = @[]
-    exists: seq[cstring] = @[]
-    res = if items.toJs().to(bool): items else: @[]
-  
+  var symbols: seq[VscodeSymbolInformation] = @[]
+  var exists: seq[cstring] = @[]
+
+  var res = if items.toJs().to(bool): items else: @[]
   try:
     for item in res:
       # skip let and var in proc and methods
@@ -100,7 +98,6 @@ proc getFileSymbols*(
     console.error("getFileSymbols - failed", e)
     raise e
   return symbols
-
 
 proc getDocumentSymbols*(
     file: cstring,
@@ -155,7 +152,6 @@ proc getDocumentSymbols*(
       symbolMap.delete(item.fullName)
 
   return toSeq(symbolMap.values)
-
 
 proc indexFile(file: cstring) {.async.} =
   let
@@ -222,18 +218,17 @@ proc indexFile(file: cstring) {.async.} =
       console.error("indexFile - dbTypes", getCurrentExceptionMsg().cstring,
           getCurrentException())
 
+proc removeFromIndex(file: cstring): void =
+  dbFiles.delete equal("file", file)
 
-proc removeFromIndex(file: cstring) = dbFiles.delete equal("file", file)
-proc addWorkspaceFile*(file: cstring) = discard indexFile(file)
-proc removeWorkspaceFile*(file: cstring) = removeFromIndex(file)
-proc changeWorkspaceFile*(file: cstring) = discard indexFile(file)
-
+proc addWorkspaceFile*(file: cstring): void = discard indexFile(file)
+proc removeWorkspaceFile*(file: cstring): void = removeFromIndex(file)
+proc changeWorkspaceFile*(file: cstring): void = discard indexFile(file)
 
 proc getDbName(name: cstring, version: cint): cstring =
-  name & "_" & cstring($version) & ".db"
+  return name & "_" & cstring($version) & ".db"
 
-
-proc cleanOldDb(basePath: cstring, name: cstring) =
+proc cleanOldDb(basePath: cstring, name: cstring): void =
   var dbPath: cstring = path.join(basePath, (name & ".db"))
   if fs.existsSync(dbPath):
     fs.unlinkSync(dbPath)
@@ -242,7 +237,6 @@ proc cleanOldDb(basePath: cstring, name: cstring) =
     var dbPath = path.join(basepath, getDbName(name, cint(i)))
     if fs.existsSync(dbPath):
       fs.unlinkSync(dbPath)
-
 
 proc indexWorkspaceFiles(filters: IndexExcludeGlobs) {.async.} =
   ## index the workspace files, exluding the ones in `filter`, this builds the
@@ -276,7 +270,6 @@ proc indexWorkspaceFiles(filters: IndexExcludeGlobs) {.async.} =
 
   hideNimProgress()
 
-
 proc initWorkspace*(extPath: cstring, filters: IndexExcludeGlobs) {.async.} =
   ## clear the caches and index all the files
 
@@ -290,7 +283,6 @@ proc initWorkspace*(extPath: cstring, filters: IndexExcludeGlobs) {.async.} =
   await indexWorkspaceFiles(filters)
   discard dbFiles.processCommands()
   discard dbTypes.processCommands()
-
 
 proc findWorkspaceSymbols*(
   query: cstring
@@ -331,13 +323,11 @@ proc findWorkspaceSymbols*(
   finally:
     return symbols
 
-
 proc clearCaches*(filters: IndexExcludeGlobs) {.async.} =
   ## clear file and type caches, and reindex while excluding `filter`ed files
   if dbTypes != nil: await dbTypes.drop()
   if dbFiles != nil: await dbFiles.drop()
   await indexWorkspaceFiles(filters)
-
 
 proc onClose*() {.async.} =
   discard await allSettled(@[

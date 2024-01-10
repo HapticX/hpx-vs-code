@@ -1,14 +1,11 @@
 ## does the work to build whatever file the user is asking for or running a
 ## nim check and handling the diagnostics.
 
-import
-  platform/vscodeApi,
-  platform/js/[jsNodeCp, jsNodeOs, jsString, jsre],
-  std/[jsconsole, sequtils],
-  nimSuggestExec,
-  nimUtils
-
+import platform/vscodeApi
+import platform/js/[jsNodeCp, jsNodeOs, jsString, jsre]
+import std/[jsconsole, sequtils]
 from std/strformat import fmt
+import nimSuggestExec, nimUtils
 from nimProjects import getProjects, isProjectMode, getProjectFileInfo,
                         ProjectFileInfo, toLocalFile
 from tools/nimBinTools import getNimExecPath
@@ -19,6 +16,7 @@ type
     line*: cint
     column*: cint
     msg*: cstring
+
   CheckResult* = ref object
     file*: cstring
     line*: cint
@@ -26,15 +24,12 @@ type
     msg*: cstring
     severity*: cstring
     stacktrace*: seq[CheckStacktrace]
+
   ExecutorStatus = ref object
     initialized: bool
     process: ChildProcess
 
-
-var
-  executors = newJsAssoc[cstring, ExecutorStatus]()
-  evalTerminal: VscodeTerminal
-
+var executors = newJsAssoc[cstring, ExecutorStatus]()
 
 proc nimExec(
     project: ProjectFileInfo,
@@ -55,9 +50,8 @@ proc nimExec(
       resolve(@[])
       return
 
-    var
-      projectPath = toLocalFile(project)
-      executorStatus = executors[projectPath]
+    var projectPath = toLocalFile(project)
+    var executorStatus = executors[projectPath]
     if(not executorStatus.isNil() and executorStatus.initialized):
       var ps = executorStatus.process
       executors[projectPath] = ExecutorStatus{
@@ -127,7 +121,6 @@ proc nimExec(
     return promiseReject(reason).toJs().to(Promise[seq[CheckResult]])
   )
 
-
 proc parseErrors(lines: seq[cstring]): seq[CheckResult] =
   var
     messageText = ""
@@ -188,7 +181,6 @@ proc parseErrors(lines: seq[cstring]): seq[CheckResult] =
   if messageText.len > 0 and result.len > 0:
     result[^1].msg &= nodeOs.eol & messageText.cstring
 
-
 proc parseNimsuggestErrors(items: seq[NimSuggestResult]): seq[CheckResult] =
   var ret: seq[CheckResult] = @[]
   for item in items.filterIt(not (it.path == "???" and it.`type` == "Hint")):
@@ -203,8 +195,8 @@ proc parseNimsuggestErrors(items: seq[NimSuggestResult]): seq[CheckResult] =
   console.log("parseNimsuggestErrors - return", ret)
   return ret
 
-
-proc check*(filename: cstring, nimConfig: VscodeWorkspaceConfiguration): Promise[seq[CheckResult]] =
+proc check*(filename: cstring, nimConfig: VscodeWorkspaceConfiguration): Promise[
+    seq[CheckResult]] =
   var runningToolsPromises: seq[Promise[seq[CheckResult]]] = @[]
 
   if nimConfig.getBool("useNimsuggestCheck", false):
@@ -242,13 +234,13 @@ proc check*(filename: cstring, nimConfig: VscodeWorkspaceConfiguration): Promise
     promiseReject(r).toJs().to(Promise[seq[CheckResult]])
   )
 
+var evalTerminal: VscodeTerminal
 
 proc activateEvalConsole*(): void =
   vscode.window.onDidCloseTerminal(proc(e: VscodeTerminal) =
     if not evalTerminal.isNil() and e.processId == evalTerminal.processId:
       evalTerminal = jsUndefined.to(VscodeTerminal)
   )
-
 
 proc selectTerminal(): Future[cstring] {.async.} =
   let items = newArrayWith[VscodeQuickPickItem](
@@ -262,11 +254,7 @@ proc selectTerminal(): Future[cstring] {.async.} =
     }
   )
   var quickPick = await vscode.window.showQuickPick(items)
-  return if quickPick.isNil():
-    jsUndefined.to(cstring)
-  else:
-    quickPick.label
-
+  return if quickPick.isNil(): jsUndefined.to(cstring) else: quickPick.label
 
 proc nextLineWithTextIdentation(startOffset: cint, tmp: seq[cstring]): cint =
   for i in startOffset..<tmp.len:
@@ -280,8 +268,7 @@ proc nextLineWithTextIdentation(startOffset: cint, tmp: seq[cstring]): cint =
 
     # Normal line without identation
     break
-  0
-
+  return 0
 
 proc maintainIndentation(text: cstring): cstring =
   var tmp = text.split(newRegExp(r"\r?\n"))
@@ -299,24 +286,23 @@ proc maintainIndentation(text: cstring): cstring =
       # should be indented
       if spaces > 0:
         tmp[i] = cstring(" ").repeat(spaces)
-  tmp.join("\n")
 
+  return tmp.join("\n")
 
 proc execSelectionInTerminal*(#[ doc:VscodeTextDocument ]#) {.async.} =
   var activeEditor = vscode.window.activeTextEditor
   if not activeEditor.isNil():
-    var
-      selection = activeEditor.selection
-      document = activeEditor.document
-      text =
-        if selection.isEmpty:
-          document.lineAt(selection.active.line).text
-        else:
-          document.getText(selection)
+    var selection = activeEditor.selection
+    var document = activeEditor.document
+    var text = if selection.isEmpty:
+                document.lineAt(selection.active.line).text
+            else:
+                document.getText(selection)
 
     if evalTerminal.isNil():
       # select type of terminal
       var executable = await selectTerminal()
+
       if executable.isNil():
         return
 

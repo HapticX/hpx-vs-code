@@ -14,9 +14,13 @@ type
 
   ExtensionState* = ref object
     ctx*: VscodeExtensionContext
+
     config*: VscodeWorkspaceConfiguration
+
     channel*: VscodeOutputChannel
+
     client*: VscodeLanguageClient
+
     installPerformed*: bool
 # type
 #   SolutionKind* {.pure.} = enum

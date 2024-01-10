@@ -1,30 +1,29 @@
 ## map between vscode and nimsuggest for providing parameter/signature completion
 
-import
-  platform/vscodeApi,
-  platform/js/[jsString, jsre],
-  std/jsconsole,
-  nimSuggestExec
+import platform/vscodeApi
+import platform/js/[jsString, jsre]
+import std/jsconsole
+import nimSuggestExec
 
 proc provideSignatureHelp(
   doc: VscodeTextDocument,
   position: VscodePosition,
   token: VscodeCancellationToken
 ): Promise[VscodeSignatureHelp] =
-  return newPromise(
-  proc(
+  return newPromise(proc(
     resolve: proc(val: VscodeSignatureHelp),
     reject: proc(reason: JsObject)
   ) =
     let filename = doc.fileName
-    var
-      currentArgument: cint = 0
-      identBeforeDot: cstring = ""
-      lines = doc.getText().split("\n")
-      cursorX: cint = max(position.character - 1, 0)
-      cursorY = position.line
-      line = lines[cursorY]
-      bracketsWithin: cint = 0
+
+    var currentArgument: cint = 0
+    var identBeforeDot: cstring = ""
+
+    var lines = doc.getText().split("\n")
+    var cursorX: cint = max(position.character - 1, 0)
+    var cursorY = position.line
+    var line = lines[cursorY]
+    var bracketsWithin: cint = 0
 
     while (line[cursorX] != '(' or bracketsWithin != 0):
       if (line[cursorX] == ',' or line[cursorX] == ';') and bracketsWithin == 0:
@@ -33,6 +32,8 @@ proc provideSignatureHelp(
         inc bracketsWithin
       elif line[cursorX] == '(':
         dec bracketsWithin
+      else:
+        discard
 
       dec cursorX
 
@@ -45,9 +46,8 @@ proc provideSignatureHelp(
           line = lines[cursorY]
           cursorX = max(cint(line.len - 1), 0)
 
-    var
-      dotPosition: cint = -1
-      start: cint = -1
+    var dotPosition: cint = -1
+    var start: cint = -1
     while cursorX >= 0:
       if line[cursorX] == '.':
         dotPosition = cursorX
@@ -59,12 +59,12 @@ proc provideSignatureHelp(
       of ' ', '\t', '(', '{', '=':
         start = cursorX + 1
         break
-      else:
-        dec cursorX
+      else: dec cursorX
 
     if start == -1:
       start = 0
-    else:
+
+    if start != -1:
       let `end`: cint = if dotPosition == -1: 0 else: cint(dotPosition - 1)
       identBeforeDot = line[start..`end`]
 
@@ -77,19 +77,18 @@ proc provideSignatureHelp(
       true,
       doc.getText()
     ).then(proc(items: seq[NimSuggestResult]) =
-      var
-        signatures = vscode.newSignatureHelp()
-        isModule = 0
+      var signatures = vscode.newSignatureHelp()
+      var isModule = 0
       if items.toJs().to(bool) and items.len > 0:
         signatures.activeSignature = 0
 
       if items.toJs().to(bool):
         for item in items:
-          let signature =
-            vscode.newSignatureInformation(item.`type`, item.documentation)
-          var
-            genericsCleanType: cstring = ""
-            insideGeneric: cint = 0
+          var signature = vscode.newSignatureInformation(item.`type`,
+              item.documentation)
+
+          var genericsCleanType: cstring = ""
+          var insideGeneric: cint = 0
           for i in [0..<(item.`type`.len)]:
             if item.`type`[i] == "[":
               inc insideGeneric
@@ -98,9 +97,8 @@ proc provideSignatureHelp(
             if item.`type`[i] == "]":
               dec insideGeneric
 
-          let signatureCutDown = newRegExp(
-            r"(proc|macro|template|iterator|func|converter) \((.+: .+)*\)", ""
-          ).exec(genericsCleanType)
+          var signatureCutDown = newRegExp(
+              r"(proc|macro|template|iterator|func) \((.+: .+)*\)", "").exec(genericsCleanType)
           if signatureCutDown.toJs().to(bool):
             let parameters = signatureCutDown[2].split(", ")
             for param in parameters:
@@ -111,11 +109,10 @@ proc provideSignatureHelp(
             inc isModule
           signatures.signatures.add(signature)
 
-      signatures.activeParameter =
-        if isModule > 0 or identBeforeDot == "":
-          currentArgument
-        else:
-          currentArgument + 1
+      signatures.activeParameter = if isModule > 0 or identBeforeDot == "":
+                      currentArgument
+                  else:
+                      currentArgument + 1
 
       resolve(signatures)
     ).catch(proc(reason: JsObject) =

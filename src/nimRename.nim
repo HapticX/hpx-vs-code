@@ -1,10 +1,8 @@
 ## provide rename functionality, this unfortunatley isn't very precise...
 ## thanks nimsuggest. :(
 
-import
-  platform/vscodeApi,
-  nimSuggestExec
-
+import platform/vscodeApi
+import nimSuggestExec
 
 proc provideRenameEdits*(
   doc: VscodeTextDocument,
@@ -28,12 +26,11 @@ proc provideRenameEdits*(
         var references = vscode.newWorkspaceEdit()
         if not suggestions.isNull() and not suggestions.isUndefined():
           for item in suggestions:
-            let
-              symbolLen: cint = cast[cint](item.symbolName.len)
-              endPosition = vscode.newPosition(
-                item.`range`.`end`.line,
-                item.`range`.`end`.character + symbolLen
-              )
+            let symbolLen: cint = cast[cint](item.symbolName.len)
+            let endPosition = vscode.newPosition(
+              item.`range`.`end`.line,
+              item.`range`.`end`.character + symbolLen
+            )
             references.replace(item.uri, vscode.newRange(item.`range`.start,
                 endPosition), newName)
           resolve(references)

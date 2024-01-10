@@ -9,10 +9,16 @@ type
   VscodeLanguageClient* = ref VscodeLanguageClientObj
   VscodeLanguageClientObj {.importc.} = object of JsRoot
 
+  TransportKind* {.pure.} = enum
+    stdio = 0,
+    ipc = 1,
+    pipe = 2,
+    socket = 3
+
   Executable* = ref ExecutableObj
   ExecutableObj {.importc.} = object of JsObject
     command*: cstring
-    transport*: cstring
+    transport*: TransportKind
 
   ServerOptions* = ref ServerOptionsObj
   ServerOptionsObj* {.importc.} = object of JsObject
@@ -35,7 +41,7 @@ proc newLanguageClient*(
   serverOptions: ServerOptions,
   clientOptions: LanguageClientOptions): VscodeLanguageClient {.importcpp: "(new #.LanguageClient(@))".}
 
-proc start*(s: VscodeLanguageClient): void {.importcpp: "#.start()".}
-proc stop*(s: VscodeLanguageClient): void {.importcpp: "#.stop()".}
+proc start*(s: VscodeLanguageClient): Promise[void] {.importcpp: "#.start()".}
+proc stop*(s: VscodeLanguageClient): Promise[void] {.importcpp: "#.stop()".}
 
 var vscodeLanguageClient*: VscodeLanguageClient = require("vscode-languageclient/node").to(VscodeLanguageClient)
