@@ -313,7 +313,7 @@ proc execNimSuggest*(
               suggest: cstring(parts[1].getStr()),
               names: parts[2].getElems().mapIt(cstring(it.getStr())),
               path: cstring(parts[3].getStr()).replace(newRegExp(r"\\,\\",
-                  r"g"), "\\"),
+                  r"g"), r"\"),
               `type`: cstring(parts[4].getStr()),
               line: cint(parts[5].getNum()),
               column: cint(parts[6].getNum()),

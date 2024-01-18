@@ -21,6 +21,15 @@
   "engines": {
     "vscode": "^1.81.2"
   },
+  "activationEvents": [
+    "onLanguage:nim",
+    "onLanguage:nimcfg",
+    "onLanguage:nimble",
+    "onCommand:nim.build",
+    "onCommand:nim.run",
+    "onCommand:nim.runTest",
+    "onCommand:nim.execSelectionInTerminal"
+  ],
   "scripts": {
       "vscode:prepublish": "nimble release"
   },
@@ -180,6 +189,38 @@
         ]
       }
     ],
+    "commands": [
+      {
+        "command": "nim.run.file",
+        "title": "Run selected Nim file",
+        "category": "Nim"
+      },
+      {
+        "command": "nim.check",
+        "title": "Check Nim project",
+        "category": "Nim"
+      },
+      {
+        "command": "nim.execSelectionInTerminal",
+        "title": "Run Selection/Line in Nim Terminal",
+        "category": "Nim"
+      },
+      {
+        "command": "nim.clearCaches",
+        "title": "Clear internal caches",
+        "category": "Nim"
+      },
+      {
+        "command": "nim.listCandidateProjects",
+        "title": "List candidate nim projects",
+        "category": "Nim"
+      },
+      {
+        "command": "nim.restartNimsuggest",
+        "title": "Restarts nimsuggest",
+        "category": "Nim"
+      }
+    ],
     "menus": {
       "editor/context": [
         {
@@ -201,7 +242,7 @@
         "when": "editorLangId == 'nim'"
       },
       {
-        "key": "shift+F6",
+        "key": "shift+enter",
         "command": "nim.execSelectionInTerminal",
         "when": "editorFocus && editorLangId == nim && !findInputFocussed && !replaceInputFocussed"
       }
@@ -248,24 +289,6 @@
           "type": "string",
           "default": "c",
           "description": "Nim build command (c, cpp, doc, etc)",
-          "enum": [
-            "c",
-            "js",
-            "cpp",
-            "objc",
-            "doc",
-            "doc2",
-            "r",
-            "rst2html",
-            "rst2tex",
-            "buildIndex",
-            "doc2tex",
-            "jsondoc",
-            "ctags",
-            "dumps",
-            "check",
-            "e"
-          ],
           "scope": "resource"
         },
         "nim.runOutputDirectory": {
@@ -282,20 +305,22 @@
         },
         "nim.enableNimsuggest": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "description": "Enable calling nimsuggest process to provide completion suggestions, hover suggestions, etc.\nThis option requires restart to take effect.",
-          "scope": "resource"
+          "scope": "resource",
+          "deprecationMessage": "Deprecated: Please use the Nim language server backend instead."
         },
         "nim.provider": {
           "type": "string",
-          "default": "nimsuggest",
+          "default": "lsp",
           "description": "The backend to use for language features.",
           "enum": [
             "nimsuggest",
             "lsp",
             "none"
           ],
-          "scope": "resource"
+          "scope": "resource",
+          "deprecationMessage": "Deprecated: Please use the lsp backend."
         },
         "nim.useNimsuggestCheck": {
           "type": "boolean",
@@ -319,17 +344,39 @@
           "default": 60,
           "description": "Nimsuggest will be restarted after this timeout in minutes, if 0 then restart disabled.\nThis option requires restart to take effect."
         },
-        "nim.nimPrettyIndent": {
+        "nim.nimprettyIndent": {
           "type": "integer",
           "default": 0,
-          "description": "NimPretty: set the number of spaces that is used for indentation\n--indent:0 means autodetection (default behaviour).",
+          "description": "Nimpretty: set the number of spaces that is used for indentation\n--indent:0 means autodetection (default behaviour).",
           "scope": "resource"
         },
-        "nim.nimPrettyMaxLineLen": {
+        "nim.nimprettyMaxLineLen": {
           "type": "integer",
-          "default": 100,
-          "description": "NimPretty: set the desired maximum line length (default: 100).",
+          "default": 80,
+          "description": "Nimpretty: set the desired maximum line length (default: 80).",
           "scope": "resource"
+        },
+        "nimlangserver.trace.server": {
+          "scope": "window",
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Traces the communication between VS Code and the Nim language server."
+        },
+        "nim.lsp.path":{
+          "type": "string",
+          "default": "",
+          "description": "Path to the Nim language server executable. If empty, the extension will try to find the language server in the PATH environment variable.",
+          "scope": "resource"
+        },
+        "nim.inlayHints.typeHints.enable": {
+          "type": "boolean",
+          "default": "true",
+          "description": "Enable inlay type hints."
         }
       }
     },

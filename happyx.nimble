@@ -28,7 +28,7 @@ task release, "This compiles a release version":
   exec "nim js -d:release -d:danger --outdir:out --checks:off --sourceMap src/nimvscode.nim"
 
 task vsix, "Build VSIX package":
-  initialNpmInstall()  
+  initialNpmInstall()
   var cmd = "npm exec -c 'vsce package --out out/nimvscode-" & version & ".vsix'"
   when defined(windows):
     cmd = "powershell.exe " & cmd

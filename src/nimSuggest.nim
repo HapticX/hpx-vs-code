@@ -97,7 +97,8 @@ proc provideCompletionItems*(
               #deduplicate suggestions
               let key = $item.symbolName
               if key notin suggestions:
-                suggestions[key] = suggestion
+                suggestions[key] = suggestion                      
+
         resolve(suggestions.values.toSeq())
       ).catch(proc(reason: JsObject) = reject(reason))
   ).catch(proc(reason: JsObject): Promise[seq[VscodeCompletionItem]] =
