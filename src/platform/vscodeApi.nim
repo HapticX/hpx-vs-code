@@ -6,6 +6,9 @@ export jsffi, jsPromise, jsNode
 ## TODO: Move from JsObject to JsRoot for more explict errors
 
 type
+  VscodeThenable* = ref VscodeThenableObj
+  VscodeThenableObj {.importc.} = object of JsRoot
+
   VscodeMarkdownString* = ref VscodeMarkdownStringObj
   VscodeMarkdownStringObj {.importc.} = object of JsObject
     value*: cstring
@@ -184,6 +187,8 @@ type
   VscodeMarkedString* = ref VscodeMarkedStringObj
   VscodeMarkedStringObj {.importc.} = object of JsObject
 
+proc then*(self: VscodeThenable, onfulfilled: proc(value: JsRoot): JsRoot, onrejected: proc(reason: JsRoot): JsRoot): VscodeThenable {.importcpp, discardable.}
+
 proc cstringToMarkedString(s: cstring): VscodeMarkedString {.importcpp: "#".}
 converter toVscodeMarkedString*(s: cstring): VscodeMarkedString = s.cstringToMarkedString()
 proc hoverLabelToMarkedString(s: VscodeHoverLabel): VscodeMarkedString {.
@@ -264,6 +269,13 @@ type
 
   VscodeWorkspaceConfiguration* = ref VscodeWorkspaceConfigurationObj
   VscodeWorkspaceConfigurationObj {.importc.} = object of JsRoot
+  VsCodeDebugConfiguration* = ref VsCodeDebugConfigurationObj
+  VsCodeDebugConfigurationObj {.importc.} = object of JsRoot
+    `type`*: cstring
+    request*: cstring
+    name*: cstring
+    program*: cstring
+    args*: Array[cstring]
 
   VscodeWorkspaceFolder* = ref VscodeWorkspaceFolderObj
   VscodeWorkspaceFolderObj {.importc.} = object of JsObject
@@ -485,8 +497,29 @@ type
     activeTextEditor*: VscodeTextEditor
     visibleTextEditors*: Array[VscodeTextEditor]
 
+  VscodeMessageItem* = ref VscodeMessageItemObj
+  VscodeMessageItemObj {.importc.} = object of JsRoot
+    isCloseAffordance*: bool
+    title*: cstring
+
+  VscodeMessageOptions* = ref VscodeMessageOptionsObj
+  VscodeMessageOptionsObj {.importc.} = object of JsRoot
+    detail*: cstring
+    modal*: bool
+
   VscodeCommands* = ref VscodeCommandsObj
   VscodeCommandsObj {.importc.} = object of JsObject
+
+  VscodeDebug* = ref VscodeDebugObj
+  VscodeDebugObj {.importc.} = object of JsObject
+
+  VscodeDebugSession* = ref VScodeDebugSessionObj 
+  VscodeDebugSessionObj {.importc.} = object of JsObject
+
+  VSCodeDebugExpression* = ref VSCodeDebugExpressionObj
+  VSCodeDebugExpressionObj {.importc.} = object of JsObject
+      expression*: cstring
+      context*: cstring
 
   VscodeStatusBarAlignment* {.nodecl, pure.} = enum
     left = 1
@@ -511,6 +544,37 @@ type
     commands*: VscodeCommands
     workspace*: VscodeWorkspace
     languages*: VscodeLanguages
+    debug*: VSCodeDebug
+  ViewColumn* {.size: sizeof(int32).} = enum
+    one = 1
+    two = 2
+    three = 3
+
+  WebviewPanelOptions* = object
+    enableFindWidget*: bool
+    retainContextWhenHidden*: bool
+
+  WebviewOptions* = object
+    enableScripts*: bool
+    enableForms*: bool
+    enableCommandUris*: bool
+    localResourceRoots*: seq[string]
+    portMapping*: seq[JsObject] # You can define a more specific type for port mapping if needed
+
+  TreeItem* = ref object of JsObject
+    label*: cstring
+    description*: cstring
+    tooltip*: cstring
+    collapsibleState*: int
+    contextValue*: cstring
+    command*: JsObject
+    iconPath*: JsObject
+  
+  EventEmitter* = ref object of JsObject
+    fire*: proc(data: JsObject) 
+  
+  # TreeDataProvider* = ref object of JsObject
+  #   onDidChangeTreeData*: EventEmitter
 
 # static function
 proc newWorkspaceEdit*(vscode: Vscode): VscodeWorkspaceEdit {.
@@ -603,7 +667,9 @@ proc with*(uri: VscodeUri, change: VscodeUriChange): VscodeUri {.importcpp.}
 
 # Output
 proc showInformationMessage*(win: VscodeWindow, msg: cstring) {.importcpp.}
+proc showInformationMessage*(win: VscodeWindow, message: cstring, options: VscodeMessageOptions): VscodeThenable {.importcpp, varargs, discardable.}
     ## shows an informational message
+proc showErrorMessage*(win: VscodeWindow, message: cstring) {.importcpp.}
 
 # Workspace
 proc saveAll*(ws: VscodeWorkspace, includeUntitledFile: bool): Future[bool] {.importcpp.}
@@ -697,6 +763,24 @@ proc onDidDelete*(
   w: VscodeFileSystemWatcher,
   listener: proc(uri: VscodeUri): void
 ): VscodeDisposable {.importcpp, discardable.}
+
+#Debug
+proc startDebugging*(
+  debug: VScodeDebug,
+  folder: VscodeWorkspaceFolder,
+  config: cstring | VsCodeDebugConfiguration
+): Future[bool] {.importcpp.}
+
+proc onDidStartDebugSession*(
+  debug: VscodeDebug,
+  listener: proc(session: VscodeDebugSession): void
+): VscodeDisposable {.importcpp, discardable.}
+
+proc customRequest*(
+  session: VscodeDebugSession, 
+  command: cstring,
+  arg: VscodeDebugExpression
+): Future[JsObject] {.importcpp.}
 
 # Languages
 proc match*(langs: VscodeLanguages, selector: VscodeDocumentFilter,
@@ -799,6 +883,21 @@ proc showQuickPick*(
   window: VscodeWindow,
   items: Array[VscodeQuickPickItem]
 ): Future[VscodeQuickPickItem] {.importcpp.}
+proc registerTreeDataProvider*(
+  window: VscodeWindow,
+  viewId: cstring, 
+  treeDataProvider: JsObject): 
+    VscodeDisposable {.importcpp.}
+const
+  TreeItemCollapsibleState_None* = 0
+  TreeItemCollapsibleState_Collapsed* = 1
+  TreeItemCollapsibleState_Expanded* = 2
+
+proc createWebviewPanel*(window: VscodeWindow, viewType: cstring, title: cstring, showOptions: ViewColumn, options: WebviewPanelOptions): JsObject {.importjs: "#.createWebviewPanel(@)".}
+proc createWebviewPanel*(window: VscodeWindow, viewType: cstring, title: cstring, showOptions: JsObject, options: WebviewPanelOptions): JsObject {.importjs: "#.createWebviewPanel(@)".}
+proc newEventEmitter*(vscode: Vscode): EventEmitter {.importcpp: "new #.EventEmitter()".}
+
+proc newTreeItem*(vscode: Vscode, label: cstring, collapsibleState: int = 0): TreeItem {.importcpp: "new #.TreeItem(@)".}
 
 # Terminal
 proc sendText*(term: VscodeTerminal, name: cstring): void {.importcpp.}

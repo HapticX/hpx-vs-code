@@ -4,14 +4,12 @@ when not defined(js):
   {.error: "This module only works on the JavaScript platform".}
 
 import platform/vscodeApi
-import platform/js/[jsre, jsString, jsNodeFs, jsNodePath]
-
-import std/jsconsole
+import platform/js/[jsre, jsString, jsNodeFs, jsNodePath, jsNodeCp]
+import tools/nimBinTools
+import std/[strformat, jsconsole, strutils, options]
 from std/strformat import fmt
 from std/os import `/`
-
-from spec import ExtensionState
-
+import spec
 import nimRename,
   nimSuggest,
   nimDeclaration,
@@ -33,7 +31,7 @@ from nimSuggestExec import extensionContext, initNimSuggest,
 from nimUtils import ext, getDirtyFile, outputLine
 from nimProjects import processConfig, configUpdate
 from nimMode import mode
-from nimLsp import startLanguageServer, stopLanguageServer
+import nimLsp
 
 var state: ExtensionState
 var diagnosticCollection {.threadvar.}: VscodeDiagnosticCollection
@@ -231,11 +229,16 @@ proc startBuildOnSaveWatcher(subscriptions: Array[VscodeDisposable]) =
     subscriptions
   )
 
-proc runFile(): void =
-  var
+proc runFile(ignore: bool, isDebug: bool = false): void =
+  #TODO detect nim path
+  let
+    state = nimUtils.ext
     editor = vscode.window.activeTextEditor
     nimCfg = vscode.workspace.getConfiguration("nim")
-    nimBuildCmdStr: cstring = "nim " & nimCfg.getStr("buildCommand")
+    nimBuildCmdStr: cstring = state.getNimCmd() & nimCfg.getStr("buildCommand")
+    runArg: cstring = if isDebug: " --debugger:native \"" else: " -r \""
+  
+  outputLine(fmt"[info] Running with Nim from {state.getNimCmd()}".cstring)
   if not editor.isNil():
     if terminal.isNil():
       terminal = vscode.window.createTerminal("Nim")
@@ -244,7 +247,7 @@ proc runFile(): void =
     if editor.document.isUntitled:
       terminal.sendText(
           nimBuildCmdStr &
-          " -r \"" &
+          runArg &
           getDirtyFile(editor.document) &
           "\"",
           true
@@ -253,7 +256,7 @@ proc runFile(): void =
       var
         outputDirConfig = nimCfg.getStr("runOutputDirectory")
         outputParams: cstring = ""
-      if not not outputDirConfig.toJs().to(bool):
+      if outputDirConfig.toJs().to(bool):
         if vscode.workspace.workspaceFolders.toJs().to(bool):
           var rootPath: cstring = ""
           for folder in vscode.workspace.workspaceFolders:
@@ -274,7 +277,7 @@ proc runFile(): void =
             terminal.sendText(
                 nimBuildCmdStr &
                 outputParams &
-                " -r \"" &
+                runArg &
                 editor.document.fileName &
                 "\"",
                 true
@@ -284,16 +287,63 @@ proc runFile(): void =
         terminal.sendText(
             nimBuildCmdStr &
             outputParams &
-            " -r \"" &
+            runArg &
             editor.document.fileName &
             "\"",
             true
         )
 
+proc debugFile() = 
+  let
+    config = vscode.workspace.getConfiguration("nim")
+    outputDirConfig = config.getStr("runOutputDirectory")
+    typ = config.getStr("debug.type")
+    editor = vscode.window.activeTextEditor
+    filename = editor.document.fileName
+    filePath  = path.join(outputDirConfig, path.basename(editor.document.fileName).replace(".nim", ""))
+    workspaceFolder = vscode.workspace.getWorkspaceFolder(editor.document.uri)
+  #compiles the file
+  runFile(ignore = false, isDebug = true)
+  let debugConfiguration = VsCodeDebugConfiguration(
+    name: "Nim: " & filename, `type`: typ, request: "launch", program: filePath 
+  )
+  discard vscode.debug.startDebugging(workspaceFolder, debugConfiguration)
+    .then(proc(success: bool) = console.log("Debugging started"))
+
+proc onStartDebugSession(session: VscodeDebugSession) = 
+  ## load the nimprettylldb.py script into the debugger
+  let dirname {.importjs:"__dirname"}: cstring
+  let pyScriptPath = path.join(dirname, "../scripts/nimprettylldb.py")
+  let cmd = cstring(&"command script import {pyScriptPath}")
+  let arg = VscodeDebugExpression(
+    expression: cmd,
+    context: "repl"
+  )
+  discard session.customRequest("evaluate", arg)
+
 proc clearCachesCmd(): void =
   ## setup a command to clear file and type caches in case they're out of date
   let config = vscode.workspace.getConfiguration("files")
   discard clearCaches(config.getStrBoolMap("watcherExclude", defaultIndexExcludeGlobs))
+
+proc setNimDir(state: ExtensionState) =
+  #TODO allow the user specify a path in the settings
+  #Exec nimble dump and extract the nimDir if it exists
+  let path = vscode.workspace.workspaceFolders[0].uri.fsPath
+  var process = cp.spawn(
+      getNimbleExecPath(), @["dump".cstring], 
+      SpawnOptions(shell: true, cwd: path))
+
+  process.stdout.onData(proc(data: Buffer) =
+    for line in splitLines($data.toString):
+     if line.startsWith("nimDir"):
+       state.nimDir = line[(1 + line.find '"')..^2]
+       outputLine(fmt"[info] Using NimDir from nimble dump. NimDir: {state.nimDir}".cstring)
+  )
+  
+proc showNimLangServerStatus() {.async.} = 
+  let lspStatus = await fetchLspStatus(state)
+  state.statusProvider.refresh(lspStatus)
 
 proc activate*(ctx: VscodeExtensionContext): void {.async.} =
   var config = vscode.workspace.getConfiguration("nim")
@@ -308,19 +358,26 @@ proc activate*(ctx: VscodeExtensionContext): void {.async.} =
   nimFormatting.extensionContext = ctx
 
   vscode.commands.registerCommand("nim.run.file", runFile)
+  vscode.commands.registerCommand("nim.debug.file", debugFile)
   vscode.commands.registerCommand("nim.check", runCheck)
   vscode.commands.registerCommand("nim.restartNimsuggest", restartNimsuggest)
   vscode.commands.registerCommand("nim.execSelectionInTerminal", execSelectionInTerminal)
   vscode.commands.registerCommand("nim.clearCaches", clearCachesCmd)
   vscode.commands.registerCommand("nim.listCandidateProjects", listCandidateProjects)
+  vscode.commands.registerCommand("nim.showNimLangServerStatus", showNimLangServerStatus)
 
   processConfig(config)
   discard vscode.workspace.onDidChangeConfiguration(configUpdate)
-
+  vscode.debug.onDidStartDebugSession(onStartDebugSession)
+    
+  setNimDir(state)
   let provider = config.getStr("provider")
 
   if provider == "lsp":
     await startLanguageServer(true, state)
+    state.statusProvider = newNimLangServerStatusProvider()
+    discard vscode.window.registerTreeDataProvider("nim", state.statusProvider)
+
   elif provider == "nimsuggest" and config.getBool("enableNimsuggest"):
     initNimSuggest()
     ctx.subscriptions.add(vscode.languages.registerCompletionItemProvider(mode,

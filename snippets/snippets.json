@@ -3,18 +3,30 @@
     "prefix": ["component"],
     "body": [
       "component ${1:ComponentName}:",
-      "  `template`:",
+      "  html:",
       "    # Here you can use HTML DSL",
       "    tDiv:",
       "      \"Hello, world!\"",
-      "  `script`:",
+      "  script:",
       "    # Here you can use real Nim code",
       "    discard",
-      "  `style` as css:", 
-      "    # Here you can use CSS DSL",
-      "    discard"
+      "  style: \"\"\"", 
+      "    div {",
+      "      background: #fff;",
+      "    }",
+      "  \"\"\""
     ],
     "description": "HappyX component declaration"
+  }, "Functional component": {
+    "prefix": ["func-component"],
+    "body": [
+      "proc ${1:ComponentName}*(): TagRef =",
+      "  buildHtml:",
+      "    # Here you can use HTML DSL",
+      "    tDiv:",
+      "      \"Hello, world!\""
+    ],
+    "description": "HappyX functional component declaration"
   }, "Request Model Declaration": {
     "prefix": ["model", "requestModel"],
     "body": [
@@ -41,7 +53,6 @@
       "  ${1:id}:  # Argument named \"${1:id}\"",
       "    type ${2:int}",
       "    optional  # Argument is optional",
-      "    mutable  # Argument is mutable",
       "    default = ${3:100}"
     ],
     "description": "HappyX Path Params declaration"
@@ -97,5 +108,23 @@
       "{.${1:pragmaName}.}"
     ],
     "description": "Nim pragma declaration"
+  }, "Variable": {
+    "prefix": ["var"],
+    "body": [
+      "var ${1:name} = ${2:\"value\"}"
+    ],
+    "description": "Nim variable declaration"
+  }, "Let": {
+    "prefix": ["let"],
+    "body": [
+      "let ${1:name} = ${2:\"value\"}"
+    ],
+    "description": "Nim let declaration"
+  }, "Constant": {
+    "prefix": ["const"],
+    "body": [
+      "const ${1:name} = ${2:\"value\"}"
+    ],
+    "description": "Nim const declaration"
   }
 }
